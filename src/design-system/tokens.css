@@ -1,0 +1,97 @@
+:root {
+  --background: #ffffff;
+  --foreground: #1e2a24;
+  --card: #ffffff;
+  --card-foreground: #1e2a24;
+  --popover: #ffffff;
+  --popover-foreground: #1e2a24;
+  --primary: #006a45;
+  --primary-foreground: #ffffff;
+  --secondary: #e8f1ed;
+  --secondary-foreground: #174333;
+  --muted: #f3f5f4;
+  --muted-foreground: #5f6b65;
+  --accent: #edf5f1;
+  --accent-foreground: #174333;
+  --destructive: #b3202e;
+  --destructive-foreground: #ffffff;
+  --success: #00784e;
+  --success-foreground: #ffffff;
+  --warning: #f4d35e;
+  --warning-foreground: #493b00;
+  --information: #dce9e3;
+  --information-foreground: #174333;
+  --border: #d9dfdc;
+  --input: #b8c2bd;
+  --ring: #006a45;
+
+  --radius: 0.625rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --page-gutter: clamp(1rem, 1.75vw, 2rem);
+  --section-gap: clamp(2rem, 4vw, 4rem);
+  --content-max-width: 80rem;
+
+  --control-sm: 2.25rem;
+  --control-md: 2.75rem;
+  --control-lg: 3.25rem;
+  --icon-sm: 0.875rem;
+  --icon-md: 1rem;
+  --icon-lg: 1.25rem;
+
+  --shadow-soft:
+    0 1px 2px rgb(15 23 42 / 0.05),
+    0 12px 32px rgb(15 23 42 / 0.08);
+  --shadow-raised:
+    0 12px 28px rgb(15 23 42 / 0.12),
+    0 2px 8px rgb(15 23 42 / 0.08);
+  --opacity-disabled: 0.5;
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+}
+
+.dark {
+  --background: #111714;
+  --foreground: #f2f5f1;
+  --card: #18201c;
+  --card-foreground: oklch(0.95 0.01 82);
+  --popover: oklch(0.24 0.014 258);
+  --popover-foreground: oklch(0.95 0.01 82);
+  --primary: #55c995;
+  --primary-foreground: #071a12;
+  --secondary: #25372f;
+  --secondary-foreground: oklch(0.95 0.01 82);
+  --muted: #26302b;
+  --muted-foreground: #aeb8b1;
+  --accent: #233a30;
+  --accent-foreground: oklch(0.95 0.01 82);
+  --destructive: oklch(0.67 0.2 28);
+  --destructive-foreground: oklch(0.97 0.01 70);
+  --success: #5ed39a;
+  --success-foreground: oklch(0.18 0.03 150);
+  --warning: oklch(0.84 0.16 82);
+  --warning-foreground: oklch(0.22 0.03 70);
+  --information: oklch(0.77 0.1 235);
+  --information-foreground: oklch(0.2 0.02 235);
+  --border: #303b35;
+  --input: #465149;
+  --ring: #55c995;
+
+  --shadow-soft:
+    0 1px 2px rgb(0 0 0 / 0.28),
+    0 18px 40px rgb(0 0 0 / 0.26);
+  --shadow-raised:
+    0 18px 42px rgb(0 0 0 / 0.34),
+    0 4px 10px rgb(0 0 0 / 0.2);
+}
