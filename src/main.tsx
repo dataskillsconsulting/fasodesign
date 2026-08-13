@@ -5,9 +5,10 @@ import App from "@/App";
 import CriminalRecordApp from "@/examples/criminal-record-app";
 import CampusFasoApp from "@/examples/campus-faso-app";
 import NationalityCertificateApp from "@/examples/nationality-certificate-app";
+import { pathnameWithoutBase } from "@/lib/base-url";
 import "@/styles/globals.css";
 
-const pathname = window.location.pathname;
+const pathname = pathnameWithoutBase(window.location.pathname);
 const RootApp = pathname.startsWith("/exemple-casier")
   ? CriminalRecordApp
   : pathname.startsWith("/exemple-campusfaso")

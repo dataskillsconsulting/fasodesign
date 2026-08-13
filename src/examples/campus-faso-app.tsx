@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { withBaseUrl } from "@/lib/base-url";
 import { Card } from "@/components/ui/card";
 
 export default function CampusFasoApp() {
@@ -12,12 +13,12 @@ export default function CampusFasoApp() {
     <div className="campus-app">
       <div className="civic-line" />
       <header className="campus-header">
-        <a href="/exemple-campusfaso" className="campus-brand"><span><GraduationCap /></span><div><strong>CampusFaso</strong><small>Orientation universitaire</small></div></a>
+        <a href={withBaseUrl("exemple-campusfaso/")} className="campus-brand"><span><GraduationCap /></span><div><strong>CampusFaso</strong><small>Orientation universitaire</small></div></a>
         <nav><a href="#formations">Formations</a><a href="#calendrier">Calendrier</a><a href="#aide">Aide</a></nav>
         <Button variant={connected ? "ghost" : "outline"} size="sm" onClick={() => setConnected(!connected)}>{connected ? <><LogOut /> Déconnexion</> : <><UserRound /> Mon espace</>}</Button>
       </header>
       {connected ? <CandidateDashboard /> : <CampusHome onConnect={() => setConnected(true)} />}
-      <footer className="campus-footer"><div><strong>CampusFaso</strong><span>Ministère de l’Enseignement supérieur, de la Recherche et de l’Innovation</span></div><div><a href="#aide">Assistance</a><a href="#formations">Guide du candidat</a><a href="/">Retour à Faso UI</a></div></footer>
+      <footer className="campus-footer"><div><strong>CampusFaso</strong><span>Ministère de l’Enseignement supérieur, de la Recherche et de l’Innovation</span></div><div><a href="#aide">Assistance</a><a href="#formations">Guide du candidat</a><a href={withBaseUrl()}>Retour à Faso UI</a></div></footer>
     </div>
   );
 }

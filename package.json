@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "vite",
     "build": "npm run build:site && npm run build:lib",
-    "build:site": "tsc -b && vite build --outDir dist-site",
+    "build:site": "tsc -b && vite build --outDir dist-site && node scripts/prepare-pages.mjs",
     "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.build.json",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",

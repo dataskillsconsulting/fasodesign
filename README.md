@@ -69,3 +69,15 @@ Les tests navigateur couvrent Chromium, Firefox, WebKit et un viewport mobile. L
 ## Versionnage
 
 Le projet suit SemVer : correctif pour une correction compatible, mineure pour un composant ou une option compatible, majeure pour toute rupture d’API ou de rendu significative.
+
+## Publication du catalogue sur GitHub Pages
+
+Le workflow `.github/workflows/pages.yml` publie automatiquement `dist-site` lors de chaque push sur `main`. Il calcule le sous-chemin depuis le nom du dépôt ; pour ce dépôt, le catalogue est construit sous `/fasodesign/`.
+
+Dans GitHub, activez une seule fois **Settings → Pages → Build and deployment → Source: GitHub Actions**. Le site sera ensuite disponible à l’adresse `https://dataskillsconsulting.github.io/fasodesign/`.
+
+Pour reproduire exactement le build Pages localement :
+
+```bash
+VITE_BASE_PATH=/fasodesign/ npm run build:site
+```
