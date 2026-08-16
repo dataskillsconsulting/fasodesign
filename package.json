@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "description": "Composants React accessibles pour les services publics numériques du Burkina Faso.",
   "license": "MIT",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "sideEffects": ["**/*.css"],
   "files": ["dist", "README.md", "CHANGELOG.md", "LICENSE"],
   "main": "./dist/index.js",
@@ -21,13 +24,14 @@
     "build": "npm run build:site && npm run build:lib",
     "build:site": "tsc -b && vite build --outDir dist-site && node scripts/prepare-pages.mjs",
     "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.build.json",
+    "check:package": "npm run build:lib && npm pack --dry-run",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:a11y": "vitest run src/test/accessibility.test.tsx",
     "test:e2e": "playwright test",
     "test:visual": "playwright test --grep @visual",
-    "check": "npm run typecheck && npm run test && npm run build"
+    "check": "npm run typecheck && npm run test && npm run build && npm run check:package"
   },
   "dependencies": {
     "class-variance-authority": "0.7.1",

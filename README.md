@@ -50,6 +50,14 @@ Pour un tri côté serveur, contrôlez `sort` et rechargez les données dans `on
 
 `Dialog` et `Drawer` ferment avec Échap, piègent le focus, bloquent le défilement de la page et restaurent le focus au déclencheur. `DropdownMenu` prend en charge les flèches, Origine, Fin et Échap. `Popover` convient aux contenus complémentaires courts ; une information indispensable doit rester dans la page.
 
+`Dialog` et `Drawer` acceptent aussi `closeOnBackdrop`, `closeOnEscape`, `initialFocusRef` et `returnFocusRef`. Utilisez `AlertDialog` pour une confirmation importante : le clic sur l’arrière-plan ne la ferme pas.
+
+## Navigation et recherche
+
+`Pagination` est contrôlée avec `page`, `total` et `onPageChange`. Elle condense automatiquement les longues listes de pages. `Tabs` génère des identifiants uniques et prend en charge les flèches, Origine et Fin. `Calendar` prend en charge les flèches, Origine, Fin, Page précédente et Page suivante.
+
+`SearchBox` requiert un nom accessible via `label`, annonce le nombre de résultats et ferme sa liste après une sélection, Échap ou un clic extérieur.
+
 ## Dates et montants
 
 `Calendar` manipule des objets `Date` dans le fuseau local du navigateur. Normalisez les dates vers ISO dans la couche métier avant envoi au serveur. `Amount` repose sur `Intl.NumberFormat`, utilise `fr-BF` et `XOF` par défaut, et affiche la devise comme `FCFA`.
@@ -61,6 +69,7 @@ npm run typecheck
 npm test
 npm run test:a11y
 npm run test:e2e
+npm run check:package
 npm run build
 ```
 

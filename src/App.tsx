@@ -4,8 +4,6 @@ import {
   Archive,
   ArrowRight,
   ArrowUpRight,
-  BookOpen,
-  Box,
   Check,
   ChevronRight,
   CircleHelp,
@@ -15,14 +13,11 @@ import {
   Download,
   Ellipsis,
   FileCheck2,
-  Grid2X2,
   Menu,
   Moon,
-  Palette,
   Search,
   Send,
   ShieldCheck,
-  Sparkles,
   Sun,
   X,
 } from "lucide-react";
@@ -59,7 +54,7 @@ import { Card } from "@/components/ui/card";
 import { Avatar, DataList, Separator, StatCard } from "@/components/ui/content";
 import { Dialog } from "@/components/ui/dialog";
 import { DatePicker } from "@/components/ui/calendar";
-import { DataTable, type DataTableColumn } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table";
 import { Drawer } from "@/components/ui/drawer";
 import {
   DropdownMenu,
@@ -113,173 +108,11 @@ import {
 } from "@/components/patterns/service-components";
 import { cn } from "@/lib/utils";
 import { withBaseUrl } from "@/lib/base-url";
+import { FasoMark } from "@/catalog/faso-mark";
+import { buttonApi, foundations, navigation, requestColumns, requestRows, searchablePages, swatches } from "@/catalog/catalog-data";
 
 type Theme = "light" | "dark";
 
-const navigation = [
-  {
-    label: "Commencer",
-    icon: BookOpen,
-    items: ["Vue d’ensemble", "Installation", "Principes"],
-  },
-  {
-    label: "Fondations",
-    icon: Palette,
-    items: ["Couleurs", "Typographie", "Espacement", "Iconographie"],
-  },
-  {
-    label: "Composants",
-    icon: Component,
-    count: 58,
-    items: [
-      "Bouton",
-      "Champ de saisie",
-      "Badge",
-      "Alerte",
-      "Formulaires",
-      "Navigation",
-      "Dialogue",
-      "Tableau",
-      "Composants avancés",
-      "Composants complémentaires",
-      "Structure officielle",
-    ],
-  },
-  {
-    label: "Patrons métier",
-    icon: Grid2X2,
-    items: ["Démarche en ligne", "Tableau de bord", "Suivi de dossier"],
-  },
-  {
-    label: "Accessibilité",
-    icon: Accessibility,
-    items: ["Référentiel", "Rédaction", "Tests"],
-  },
-];
-
-const foundations = [
-  {
-    icon: Palette,
-    title: "Une identité publique",
-    text: "Des couleurs nationales utilisées comme repères, jamais comme décoration.",
-  },
-  {
-    icon: Accessibility,
-    title: "Accessible d’abord",
-    text: "Contrastes AA, clavier, français clair et zones tactiles généreuses.",
-  },
-  {
-    icon: Box,
-    title: "Conçu pour durer",
-    text: "Des primitives stables, composables et simples à maintenir.",
-  },
-];
-
-const swatches = [
-  { name: "Vert institution", value: "#006A45", className: "bg-[#006A45]" },
-  { name: "Vert clair", value: "#E8F1ED", className: "bg-[#E8F1ED]" },
-  { name: "Encre", value: "#1E2A24", className: "bg-[#1E2A24]" },
-  { name: "Gris texte", value: "#5F6B65", className: "bg-[#5F6B65]" },
-  { name: "Gris interface", value: "#D9DFDC", className: "bg-[#D9DFDC]" },
-  { name: "Blanc", value: "#FFFFFF", className: "bg-white border" },
-];
-
-const buttonApi = [
-  [
-    "variant",
-    '"default" | "secondary" | "outline" | "ghost" | "destructive" | "link"',
-    '"default"',
-  ],
-  [
-    "size",
-    '"sm" | "default" | "lg" | "icon" | "icon-sm" | "icon-lg"',
-    '"default"',
-  ],
-  ["width", '"auto" | "full"', '"auto"'],
-  ["loading", "boolean", "false"],
-  ["loadingText", "ReactNode", "—"],
-];
-
-const requestRows = [
-  {
-    reference: "BF-0148",
-    service: "Certificat de nationalité",
-    status: "Validé",
-    updated: "2026-07-25",
-  },
-  {
-    reference: "BF-0132",
-    service: "Casier judiciaire",
-    status: "En attente",
-    updated: "2026-07-23",
-  },
-  {
-    reference: "BF-0096",
-    service: "Extrait de naissance",
-    status: "Brouillon",
-    updated: "2026-07-18",
-  },
-];
-
-const requestColumns: DataTableColumn<(typeof requestRows)[number]>[] = [
-  {
-    key: "reference",
-    header: "Référence",
-    cell: (row) => <code>{row.reference}</code>,
-    sortValue: (row) => row.reference,
-  },
-  {
-    key: "service",
-    header: "Démarche",
-    cell: (row) => row.service,
-    sortValue: (row) => row.service,
-  },
-  {
-    key: "status",
-    header: "Statut",
-    cell: (row) => (
-      <Badge
-        variant={
-          row.status === "Validé"
-            ? "success"
-            : row.status === "En attente"
-              ? "warning"
-              : "neutral"
-        }
-        size="sm"
-      >
-        {row.status}
-      </Badge>
-    ),
-    sortValue: (row) => row.status,
-  },
-  {
-    key: "updated",
-    header: "Mise à jour",
-    cell: (row) =>
-      new Intl.DateTimeFormat("fr-BF", { dateStyle: "medium" }).format(
-        new Date(row.updated),
-      ),
-    sortValue: (row) => row.updated,
-  },
-];
-
-const searchablePages = navigation.flatMap((group) =>
-  group.items.map((label) => ({
-    label,
-    group: group.label,
-    id: label.toLowerCase().replaceAll(" ", "-"),
-  })),
-);
-
-function FasoMark() {
-  return (
-    <span className="faso-mark" aria-hidden="true">
-      <span />
-      <Sparkles size={13} strokeWidth={2.5} />
-    </span>
-  );
-}
 
 export default function App() {
   const [theme, setTheme] = useState<Theme>("light");
@@ -580,7 +413,7 @@ export default function App() {
                   tokens globaux une seule fois à la racine.
                 </p>
               </div>
-              <pre className="code-block">
+              <pre className="code-block" tabIndex={0}>
                 <code>{`npm install @faso-ui/react
 
 import "@faso-ui/react/styles.css"
@@ -806,7 +639,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     est conservé pour les formulaires.
                   </p>
                 </div>
-                <pre className="code-block">
+                <pre className="code-block" tabIndex={0}>
                   <code>{`import { Button } from "@/components/ui/button"
 
 <Button type="submit">
@@ -828,7 +661,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     également acceptées.
                   </p>
                 </div>
-                <div className="api-table-wrap">
+                <div className="api-table-wrap" tabIndex={0}>
                   <table className="api-table">
                     <thead>
                       <tr>
@@ -957,7 +790,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     compositions avancées.
                   </p>
                 </div>
-                <pre className="code-block">
+                <pre className="code-block" tabIndex={0}>
                   <code>{`<Field
   label="Numéro CNIB"
   placeholder="Ex. B1234567"
@@ -1050,7 +883,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     une préférence esthétique.
                   </p>
                 </div>
-                <pre className="code-block">
+                <pre className="code-block" tabIndex={0}>
                   <code>{`<Badge variant="success">Validé</Badge>
 <Badge variant="warning">
   <Clock3 />
@@ -1125,7 +958,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     <code>role="status"</code>.
                   </p>
                 </div>
-                <pre className="code-block">
+                <pre className="code-block" tabIndex={0}>
                   <code>{`<Alert variant="success" title="Dossier transmis">
   Votre demande a bien été enregistrée.
 </Alert>
@@ -1238,7 +1071,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     décision sensible.
                   </p>
                 </div>
-                <pre className="code-block">
+                <pre className="code-block" tabIndex={0}>
                   <code>{`<Select aria-label="Province">
   <option>Kadiogo</option>
   <option>Houet</option>
@@ -1314,7 +1147,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     <Badge size="sm">Pagination</Badge>
                   </div>
                   <div className="grid min-h-24 place-items-center">
-                    <Pagination total={3} />
+                    <Pagination page={2} total={3} />
                   </div>
                 </Card>
               </div>
@@ -1970,7 +1803,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     décoration.
                   </p>
                 </div>
-                <pre className="code-block">
+                <pre className="code-block" tabIndex={0}>
                   <code>{`<Dashboard>
   <DashboardSummary />
   <RequiredActions />
@@ -2087,7 +1920,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                   production.
                 </p>
               </div>
-              <pre className="code-block">
+              <pre className="code-block" tabIndex={0}>
                 <code>{`npm run test
 npm run test:a11y
 npm run typecheck

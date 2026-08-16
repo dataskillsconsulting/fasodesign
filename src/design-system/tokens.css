@@ -45,6 +45,7 @@
   --control-sm: 2.25rem;
   --control-md: 2.75rem;
   --control-lg: 3.25rem;
+  --target-min: 2.75rem;
   --icon-sm: 0.875rem;
   --icon-md: 1rem;
   --icon-lg: 1.25rem;
@@ -59,6 +60,12 @@
   --duration-fast: 150ms;
   --duration-base: 200ms;
   --duration-slow: 320ms;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --z-dropdown: 70;
+  --z-popover: 80;
+  --z-overlay: 90;
+  --z-toast: 100;
 }
 
 .dark {

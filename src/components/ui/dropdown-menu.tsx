@@ -18,8 +18,10 @@ export function DropdownMenu({ trigger, label, align = "end", children }: { trig
   useEffect(() => {
     if (!open) return;
     function handlePointer(event: PointerEvent) { if (!rootRef.current?.contains(event.target as Node)) setOpen(false); }
+    function handleEscape(event: KeyboardEvent) { if (event.key === "Escape") { setOpen(false); focusTrigger(); } }
     document.addEventListener("pointerdown", handlePointer);
-    return () => document.removeEventListener("pointerdown", handlePointer);
+    document.addEventListener("keydown", handleEscape);
+    return () => { document.removeEventListener("pointerdown", handlePointer); document.removeEventListener("keydown", handleEscape); };
   }, [open]);
 
   function handleMenuKeyDown(event: ReactKeyboardEvent) {

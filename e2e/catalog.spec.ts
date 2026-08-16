@@ -7,6 +7,7 @@ test("navigation clavier et superpositions", async ({ page }) => {
   await page.locator("#tableau").getByRole("button", { name: "Actions", exact: true }).click();
   await expect(page.getByRole("menu", { name: "Actions du dossier" })).toBeVisible();
   await page.keyboard.press("Escape");
+  await expect(page.getByRole("menu", { name: "Actions du dossier" })).toBeHidden();
   await page.getByRole("button", { name: "Ouvrir le panneau" }).click();
   await expect(page.getByRole("dialog", { name: "Dossier BF-0148" })).toBeVisible();
   await page.keyboard.press("Escape");
