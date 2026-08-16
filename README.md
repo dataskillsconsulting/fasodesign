@@ -58,6 +58,16 @@ Pour un tri côté serveur, contrôlez `sort` et rechargez les données dans `on
 
 `SearchBox` requiert un nom accessible via `label`, annonce le nombre de résultats et ferme sa liste après une sélection, Échap ou un clic extérieur.
 
+## Formulaires administratifs
+
+Le socle comprend `Fieldset`, `FormSection`, `RadioGroup`, `CheckboxGroup`, `PasswordField`, `NumberField`, `CurrencyField`, `MultiSelect`, `DateRangeField`, `TimeField` et `FormActions`. Les valeurs métier restent contrôlées par l’application. `NumberField` et `CurrencyField` acceptent la virgule décimale française sans reformater la valeur pendant la frappe.
+
+## Parcours de service public
+
+`ServiceCard`, `EligibilityCheck`, `DocumentChecklist`, `ApplicationSummary`, `ReferenceNumber`, `Deadline`, `ContactBlock` et `OfficialNotice` couvrent les principales étapes d’une démarche. `ResponsiveTable`, `FilterPanel`, `BulkActions`, `ResultCount` et `LoadingOverlay` complètent les écrans de gestion.
+
+Pour la navigation publique, utilisez `SkipLink`, `BackLink`, `SideNavigation`, `LanguageSwitcher` et `AnchorNavigation`. Placez l’application sous `ToastProvider`, puis appelez `useToast()` pour ajouter ou fermer une notification globale.
+
 ## Dates et montants
 
 `Calendar` manipule des objets `Date` dans le fuseau local du navigateur. Normalisez les dates vers ISO dans la couche métier avant envoi au serveur. `Amount` repose sur `Intl.NumberFormat`, utilise `fr-BF` et `XOF` par défaut, et affiche la devise comme `FCFA`.

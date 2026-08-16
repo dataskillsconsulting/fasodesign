@@ -33,6 +33,15 @@ import {
   CitizenDashboardPattern,
   OnlineApplicationPattern,
 } from "@/components/patterns/business-patterns";
+import {
+  ContactBlock,
+  Deadline,
+  DocumentChecklist,
+  OfficialNotice,
+  ReferenceNumber,
+  ServiceCard,
+} from "@/components/patterns/civic-components";
+import { EligibilityCheck } from "@/components/patterns/eligibility-check";
 import { Alert } from "@/components/ui/alert";
 import {
   Accordion,
@@ -55,6 +64,11 @@ import { Avatar, DataList, Separator, StatCard } from "@/components/ui/content";
 import { Dialog } from "@/components/ui/dialog";
 import { DatePicker } from "@/components/ui/calendar";
 import { DataTable } from "@/components/ui/data-table";
+import {
+  FilterPanel,
+  ResponsiveTable,
+  ResultCount,
+} from "@/components/ui/data-tools";
 import { Drawer } from "@/components/ui/drawer";
 import {
   DropdownMenu,
@@ -75,6 +89,14 @@ import {
   Switch,
   Textarea,
 } from "@/components/ui/form-controls";
+import {
+  CheckboxGroup,
+  CurrencyField,
+  FormActions,
+  FormSection,
+  PasswordField,
+  RadioGroup,
+} from "@/components/ui/form-patterns";
 import { Field, Input } from "@/components/ui/input";
 import {
   Breadcrumb,
@@ -95,6 +117,17 @@ import {
   Popover,
   SearchBox,
 } from "@/components/ui/primitives";
+import {
+  AnchorNavigation,
+  BackLink,
+  LanguageSwitcher,
+  SideNavigation,
+} from "@/components/ui/public-navigation";
+import {
+  DateRangeField,
+  MultiSelect,
+  TimeField,
+} from "@/components/ui/selection-controls";
 import { Stepper } from "@/components/ui/stepper";
 import {
   ActionMenu,
@@ -127,6 +160,16 @@ export default function App() {
   const [toastVisible, setToastVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [requestType, setRequestType] = useState("citizen");
+  const [documents, setDocuments] = useState<string[]>(["identity"]);
+  const [provinces, setProvinces] = useState<string[]>(["kadiogo"]);
+  const [amount, setAmount] = useState<number>();
+  const [dateRange, setDateRange] = useState<{ start?: string; end?: string }>({});
+  const [appointmentTime, setAppointmentTime] = useState("09:00");
+  const [language, setLanguage] = useState("fr");
+  const [activeFilters, setActiveFilters] = useState([
+    { id: "status", label: "Statut", value: "En attente" },
+  ]);
   const searchResults = searchQuery.trim()
     ? searchablePages
         .filter((page) =>
@@ -1725,6 +1768,200 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                   actions={<Button>Nouvelle demande</Button>}
                 />
               </div>
+            </section>
+
+            <section className="doc-section" id="nouveautés">
+              <div className="section-heading">
+                <div>
+                  <span className="eyebrow">Composants · Nouvelle collection</span>
+                  <h2>Nouveautés</h2>
+                </div>
+                <p>
+                  Formulaires administratifs, parcours de démarche, navigation
+                  publique et outils de gestion ajoutés à la bibliothèque.
+                </p>
+              </div>
+
+              <div className="component-doc-block">
+                <SectionHeader
+                  title="Formulaires administratifs"
+                  description="Des champs contrôlés adaptés aux données et usages locaux."
+                />
+                <FormSection
+                  className="mt-5"
+                  title="Informations de la demande"
+                  description="Exemple interactif combinant les nouveaux contrôles."
+                >
+                  <div className="grid gap-6 lg:grid-cols-2">
+                    <RadioGroup
+                      legend="Vous effectuez la demande pour"
+                      value={requestType}
+                      onValueChange={setRequestType}
+                      options={[
+                        { value: "citizen", label: "Moi-même", description: "Demande personnelle" },
+                        { value: "representative", label: "Une autre personne", description: "Avec une procuration" },
+                      ]}
+                    />
+                    <CheckboxGroup
+                      legend="Documents disponibles"
+                      hint="Sélectionnez toutes les pièces déjà en votre possession."
+                      value={documents}
+                      onValueChange={setDocuments}
+                      options={[
+                        { value: "identity", label: "CNIB ou passeport" },
+                        { value: "birth", label: "Extrait de naissance" },
+                        { value: "residence", label: "Certificat de résidence" },
+                      ]}
+                    />
+                    <PasswordField label="Mot de passe" hint="Au moins 8 caractères." />
+                    <CurrencyField
+                      label="Montant déclaré"
+                      value={amount}
+                      onValueChange={setAmount}
+                      minimum={0}
+                    />
+                    <MultiSelect
+                      label="Provinces concernées"
+                      value={provinces}
+                      onValueChange={setProvinces}
+                      options={[
+                        { value: "kadiogo", label: "Kadiogo", description: "Centre" },
+                        { value: "houet", label: "Houet", description: "Hauts-Bassins" },
+                        { value: "boulkiemde", label: "Boulkiemdé", description: "Centre-Ouest" },
+                      ]}
+                    />
+                    <TimeField
+                      label="Heure du rendez-vous"
+                      value={appointmentTime}
+                      onValueChange={setAppointmentTime}
+                      min="08:00"
+                      max="16:00"
+                    />
+                  </div>
+                  <DateRangeField
+                    label="Période souhaitée"
+                    value={dateRange}
+                    onValueChange={setDateRange}
+                  />
+                  <FormActions
+                    secondaryLabel="Annuler"
+                    saveLabel="Enregistrer le brouillon"
+                    primaryLabel="Continuer"
+                  />
+                </FormSection>
+              </div>
+
+              <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                <ServiceCard
+                  badge="100 % en ligne"
+                  title="Certificat de nationalité burkinabè"
+                  description="Préparez les pièces et suivez votre demande en ligne."
+                  organization="Ministère de la Justice"
+                  fee="500 FCFA"
+                  processingTime="5 jours ouvrés"
+                  online
+                  href="#nouveautés"
+                />
+                <div className="grid gap-4">
+                  <ReferenceNumber value="BF-2026-01842" />
+                  <Deadline
+                    duration="3 à 5 jours ouvrés"
+                    description="À compter de la validation des pièces."
+                  />
+                </div>
+              </div>
+
+              <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                <DocumentChecklist
+                  items={[
+                    { id: "cnib", label: "Copie de la CNIB", status: "validated", required: true },
+                    { id: "birth", label: "Extrait de naissance", status: "provided", required: true },
+                    { id: "photo", label: "Photo d’identité", status: "missing", required: true, action: <Button size="sm" variant="outline">Ajouter</Button> },
+                  ]}
+                />
+                <ContactBlock
+                  organization="Centre de services aux citoyens"
+                  phone="+226 25 30 66 44"
+                  email="aide@service.gov.bf"
+                  hours="Lundi–vendredi, 8 h–16 h"
+                />
+              </div>
+
+              <div className="component-doc-block">
+                <SectionHeader
+                  title="Éligibilité"
+                  description="Un parcours court, progressif et utilisable au clavier."
+                />
+                <EligibilityCheck
+                  questions={[
+                    {
+                      id: "nationality",
+                      title: "Êtes-vous de nationalité burkinabè ?",
+                      options: [{ value: "yes", label: "Oui" }, { value: "no", label: "Non" }],
+                    },
+                    {
+                      id: "adult",
+                      title: "Avez-vous 18 ans ou plus ?",
+                      options: [{ value: "yes", label: "Oui" }, { value: "no", label: "Non" }],
+                    },
+                  ]}
+                  evaluate={(answers) => ({
+                    eligible: answers.nationality === "yes" && answers.adult === "yes",
+                    title: answers.nationality === "yes" && answers.adult === "yes" ? "Vous pouvez poursuivre" : "Cette démarche ne correspond pas à votre situation",
+                    description: answers.nationality === "yes" && answers.adult === "yes" ? "Préparez maintenant vos pièces justificatives." : "Contactez le service pour connaître la procédure adaptée.",
+                  })}
+                />
+              </div>
+
+              <div className="component-doc-block">
+                <SectionHeader
+                  title="Navigation publique et données"
+                  description="Repères de page et affichage responsive des résultats."
+                />
+                <div className="mt-5 grid gap-6 lg:grid-cols-[15rem_1fr]">
+                  <div className="grid content-start gap-5">
+                    <BackLink onClick={(event) => event.preventDefault()}>Retour aux démarches</BackLink>
+                    <SideNavigation items={[
+                      { label: "Vue d’ensemble", href: "#nouveautés", current: true },
+                      { label: "Mes documents", href: "#nouveautés" },
+                      { label: "Historique", href: "#nouveautés" },
+                    ]} />
+                    <LanguageSwitcher
+                      value={language}
+                      onValueChange={setLanguage}
+                      languages={[{ code: "fr", label: "Français" }, { code: "mo", label: "Mooré" }]}
+                    />
+                    <AnchorNavigation activeId="resultats-demo" items={[
+                      { id: "resultats-demo", label: "Résultats" },
+                      { id: "nouveautés", label: "Composants" },
+                    ]} />
+                  </div>
+                  <div id="resultats-demo" className="grid gap-4">
+                    <FilterPanel
+                      activeFilters={activeFilters}
+                      onRemoveFilter={(id) => setActiveFilters((items) => items.filter((item) => item.id !== id))}
+                      onReset={() => setActiveFilters([])}
+                    >
+                      <Field id="new-filter-reference" label="Référence" placeholder="BF-2026…" />
+                    </FilterPanel>
+                    <ResultCount count={requestRows.length} label="dossier" />
+                    <ResponsiveTable
+                      caption="Dossiers récents"
+                      data={requestRows}
+                      getRowKey={(row) => row.reference}
+                      columns={[
+                        { key: "reference", header: "Référence", primary: true, cell: (row) => row.reference },
+                        { key: "service", header: "Démarche", cell: (row) => row.service },
+                        { key: "status", header: "Statut", cell: (row) => row.status },
+                      ]}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <OfficialNotice title="Information officielle">
+                <p>Les nouveaux composants sont disponibles depuis le point d’entrée public de Faso UI.</p>
+              </OfficialNotice>
             </section>
 
             <section className="doc-section" id="structure-officielle">

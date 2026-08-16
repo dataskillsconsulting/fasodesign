@@ -6,7 +6,7 @@ import type { DataTableColumn } from "@/components/ui/data-table";
 export const navigation = [
   { label: "Commencer", icon: BookOpen, items: ["Vue d’ensemble", "Installation", "Principes"] },
   { label: "Fondations", icon: Palette, items: ["Couleurs", "Typographie", "Espacement", "Iconographie"] },
-  { label: "Composants", icon: Component, count: 58, items: ["Bouton", "Champ de saisie", "Badge", "Alerte", "Formulaires", "Navigation", "Dialogue", "Tableau", "Composants avancés", "Composants complémentaires", "Structure officielle"] },
+  { label: "Composants", icon: Component, count: 88, items: ["Bouton", "Champ de saisie", "Badge", "Alerte", "Formulaires", "Navigation", "Dialogue", "Tableau", "Composants avancés", "Composants complémentaires", "Nouveautés", "Structure officielle"] },
   { label: "Patrons métier", icon: Grid2X2, items: ["Démarche en ligne", "Tableau de bord", "Suivi de dossier"] },
   { label: "Accessibilité", icon: Accessibility, items: ["Référentiel", "Rédaction", "Tests"] },
 ];

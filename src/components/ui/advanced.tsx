@@ -22,30 +22,52 @@ export function FileUpload({
   label = "Ajouter un document",
   accept = ".pdf,.jpg,.jpeg,.png",
   maxSize = "5 Mo",
+  maxSizeBytes = 5 * 1024 * 1024,
+  value,
+  onValueChange,
+  error,
+  disabled,
 }: {
   label?: string;
   accept?: string;
   maxSize?: string;
+  maxSizeBytes?: number;
+  value?: File | null;
+  onValueChange?: (file: File | null) => void;
+  error?: string;
+  disabled?: boolean;
 }) {
   const id = useId();
-  const [file, setFile] = useState<File | null>(null);
+  const [internalFile, setInternalFile] = useState<File | null>(null);
+  const [internalError, setInternalError] = useState<string>();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const file = value === undefined ? internalFile : value;
+  const resolvedError = error ?? internalError;
+  function selectFile(nextFile: File | null) { if (nextFile && nextFile.size > maxSizeBytes) { setInternalError(`Le fichier dépasse la taille maximale de ${maxSize}.`); return; } setInternalError(undefined); if (value === undefined) setInternalFile(nextFile); onValueChange?.(nextFile); }
+  function removeFile() { selectFile(null); if (inputRef.current) inputRef.current.value = ""; }
   return (
     <div>
-      <label className={cn("file-dropzone", file && "has-file")} htmlFor={id}>
-        <input id={id} type="file" accept={accept} onChange={(event) => setFile(event.target.files?.[0] ?? null)} />
+      <label className={cn("file-dropzone", file && "has-file", resolvedError && "has-error")} htmlFor={id} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); if (!disabled) selectFile(event.dataTransfer.files[0] ?? null); }}>
+        <input ref={inputRef} id={id} type="file" accept={accept} disabled={disabled} aria-invalid={resolvedError ? true : undefined} aria-describedby={resolvedError ? `${id}-error` : undefined} onChange={(event) => selectFile(event.target.files?.[0] ?? null)} />
         {file ? <FileIcon /> : <UploadCloud />}
         <strong>{file ? file.name : label}</strong>
         <span>{file ? `${Math.max(.1, file.size / 1024 / 1024).toFixed(1)} Mo` : `PDF, JPG ou PNG · ${maxSize} maximum`}</span>
         {!file ? <em>Parcourir les fichiers</em> : null}
       </label>
-      {file ? <button className="file-remove" onClick={() => setFile(null)}><X /> Retirer le fichier</button> : null}
+      {resolvedError ? <p className="field-message error" role="alert" id={`${id}-error`}>{resolvedError}</p> : null}
+      {file ? <button type="button" className="file-remove" onClick={removeFile}><X /> Retirer le fichier</button> : null}
     </div>
   );
 }
 
-export function OtpInput({ length = 6, label = "Code de vérification" }: { length?: number; label?: string }) {
-  const [values, setValues] = useState(() => Array.from({ length }, () => ""));
+export type OtpInputProps = { length?: number; label?: string; value?: string; onValueChange?: (value: string) => void; onComplete?: (value: string) => void; error?: string; disabled?: boolean };
+export function OtpInput({ length = 6, label = "Code de vérification", value, onValueChange, onComplete, error, disabled }: OtpInputProps) {
+  const [internalValue, setInternalValue] = useState("");
+  const resolvedValue = value === undefined ? internalValue : value;
+  const values = Array.from({ length }, (_, index) => resolvedValue[index] ?? "");
   const refs = useRef<Array<HTMLInputElement | null>>([]);
+  const errorId = useId();
+  function update(next: string) { const digits = next.replace(/\D/g, "").slice(0, length); if (value === undefined) setInternalValue(digits); onValueChange?.(digits); if (digits.length === length) onComplete?.(digits); }
   return (
     <fieldset className="otp-field">
       <legend>{label}</legend>
@@ -59,9 +81,13 @@ export function OtpInput({ length = 6, label = "Code de vérification" }: { leng
             autoComplete={index === 0 ? "one-time-code" : "off"}
             aria-label={`Chiffre ${index + 1} sur ${length}`}
             maxLength={1}
+            disabled={disabled}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? errorId : undefined}
+            onPaste={(event) => { event.preventDefault(); const digits = event.clipboardData.getData("text").replace(/\D/g, "").slice(0, length); update(digits); refs.current[Math.min(digits.length, length) - 1]?.focus(); }}
             onChange={(event) => {
               const digit = event.target.value.replace(/\D/g, "").slice(-1);
-              setValues((current) => current.map((item, itemIndex) => itemIndex === index ? digit : item));
+              update(values.map((item, itemIndex) => itemIndex === index ? digit : item).join(""));
               if (digit) refs.current[index + 1]?.focus();
             }}
             onKeyDown={(event) => {
@@ -70,6 +96,7 @@ export function OtpInput({ length = 6, label = "Code de vérification" }: { leng
           />
         ))}
       </div>
+      {error ? <p className="field-message error" role="alert" id={errorId}>{error}</p> : null}
     </fieldset>
   );
 }
@@ -111,18 +138,23 @@ export function ErrorSummary({ errors }: { errors: Array<{ field: string; messag
   );
 }
 
-export function Accordion({ items }: { items: Array<{ title: string; content: ReactNode }> }) {
-  const [open, setOpen] = useState<number | null>(0);
+export type AccordionItem = { id?: string; title: string; content: ReactNode; disabled?: boolean };
+export type AccordionProps = { items: AccordionItem[]; value?: string[]; defaultValue?: string[]; onValueChange?: (value: string[]) => void; multiple?: boolean };
+export function Accordion({ items, value, defaultValue = [items[0]?.id ?? "0"], onValueChange, multiple = false }: AccordionProps) {
+  const [internalValue, setInternalValue] = useState(defaultValue);
+  const open = value ?? internalValue;
+  const baseId = useId();
+  function toggle(id: string) { const next = open.includes(id) ? open.filter((item) => item !== id) : multiple ? [...open, id] : [id]; if (value === undefined) setInternalValue(next); onValueChange?.(next); }
   return (
     <div className="accordion">
-      {items.map((item, index) => (
+      {items.map((item, index) => { const id = item.id ?? String(index); const triggerId = `${baseId}-trigger-${id}`; const panelId = `${baseId}-panel-${id}`; return (
         <div key={item.title}>
-          <button aria-expanded={open === index} onClick={() => setOpen(open === index ? null : index)}>
+          <button type="button" id={triggerId} aria-expanded={open.includes(id)} aria-controls={panelId} disabled={item.disabled} onClick={() => toggle(id)}>
             {item.title}<ChevronDown />
           </button>
-          {open === index ? <div>{item.content}</div> : null}
+          {open.includes(id) ? <div id={panelId} role="region" aria-labelledby={triggerId}>{item.content}</div> : null}
         </div>
-      ))}
+      ); })}
     </div>
   );
 }

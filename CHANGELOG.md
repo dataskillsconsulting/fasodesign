@@ -10,12 +10,17 @@ Les changements notables sont documentés ici. Le projet suit [Keep a Changelog]
 - Options de focus et de fermeture pour les dialogues et panneaux.
 - Annonce des résultats et fermeture extérieure de `SearchBox`.
 - Validation du tarball npm dans la CI.
+- Socle de formulaires administratifs : groupes de choix, mot de passe, nombres, montants, sélection multiple, période et heure.
+- Composants de démarche : service, éligibilité, justificatifs, récapitulatif, référence, délai, contact et avis officiel.
+- Navigation publique : lien d’évitement, retour, navigation latérale, langues et sommaire.
+- Outils de données responsifs, filtres, actions groupées, chargement et gestionnaire global de notifications.
 
 ### Modifié
 
 - Identifiants uniques pour les groupes d’onglets.
 - Métadonnées du catalogue extraites de l’application principale.
 - Couverture des tests d’interaction et d’accessibilité étendue.
+- `FileUpload`, `OtpInput` et `Accordion` disposent maintenant d’API contrôlées, du collage de code, de limites de fichier et de l’ouverture multiple.
 
 ## [1.0.0] - 2026-08-13
 
