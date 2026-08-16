@@ -4,10 +4,17 @@ import { Badge } from "@/components/ui/badge";
 import type { DataTableColumn } from "@/components/ui/data-table";
 
 export const navigation = [
-  { label: "Commencer", icon: BookOpen, items: ["Vue d’ensemble", "Installation", "Principes"] },
+  { label: "Commencer", icon: BookOpen, items: ["Vue d’ensemble", "Architecture", "Installation", "Principes"] },
   { label: "Fondations", icon: Palette, items: ["Couleurs", "Typographie", "Espacement", "Iconographie"] },
-  { label: "Composants", icon: Component, count: 88, items: ["Bouton", "Champ de saisie", "Badge", "Alerte", "Formulaires", "Navigation", "Dialogue", "Tableau", "Composants avancés", "Composants complémentaires", "Nouveautés", "Structure officielle"] },
-  { label: "Patrons métier", icon: Grid2X2, items: ["Démarche en ligne", "Tableau de bord", "Suivi de dossier"] },
+  { label: "Composants de base", icon: Component, items: [
+    "Bouton", "Champ de saisie", "Badge", "Alerte", "Formulaires", "Navigation", "Dialogue", "Tableau",
+    "Téléversement de fichier", "Code de vérification", "Champ de date", "Champ de téléphone", "Autocomplétion", "Résumé d’erreurs",
+    "Accordéon", "État vide", "Notification", "Infobulle", "Indicateur de chargement", "Avatar", "Liste de données", "Carte statistique", "Bannière globale",
+    "Barre de recherche", "Menu de navigation", "Sélecteur de date", "Fenêtre contextuelle", "Champ composé", "Étiquette", "Aperçu de fichier", "Centre de notifications", "Dialogue de confirmation",
+  ] },
+  { label: "Composants métier", icon: Box, items: ["Informations administratives", "Dossier et paiement", "Formulaires administratifs", "Services aux citoyens", "Éligibilité"] },
+  { label: "Patrons de parcours", icon: Grid2X2, items: ["Démarche en ligne", "Tableau de bord", "Suivi de dossier"] },
+  { label: "Gabarits institutionnels", icon: Box, items: ["Structure officielle"] },
   { label: "Accessibilité", icon: Accessibility, items: ["Référentiel", "Rédaction", "Tests"] },
 ];
 

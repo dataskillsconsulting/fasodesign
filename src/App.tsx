@@ -359,7 +359,6 @@ export default function App() {
                   <div className="nav-label">
                     <group.icon size={15} />
                     {group.label}
-                    {group.count ? <span>{group.count}</span> : null}
                   </div>
                   {group.items.map((item, itemIndex) => (
                     <a
@@ -430,6 +429,61 @@ export default function App() {
                   <br />
                   Service public
                 </span>
+              </div>
+            </section>
+
+            <section className="doc-section" id="architecture">
+              <div className="section-heading">
+                <div>
+                  <span className="eyebrow">Repères du catalogue</span>
+                  <h2>Du socle au parcours</h2>
+                </div>
+                <p>
+                  Chaque famille répond à un niveau de composition différent.
+                  Commencez par le composant le plus simple qui couvre votre besoin.
+                </p>
+              </div>
+              <div className="catalog-grid">
+                <Card className="catalog-card">
+                  <div className="catalog-title">
+                    <h3>Composants de base</h3>
+                    <Badge size="sm" variant="neutral">Base</Badge>
+                  </div>
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    Primitives génériques et composables, sans vocabulaire administratif.
+                  </p>
+                  <Link className="mt-4 inline-flex" href="#bouton">Explorer les composants</Link>
+                </Card>
+                <Card className="catalog-card">
+                  <div className="catalog-title">
+                    <h3>Composants métier</h3>
+                    <Badge size="sm" variant="success">Métier</Badge>
+                  </div>
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    Assemblages adaptés aux dossiers, documents, paiements et démarches publiques.
+                  </p>
+                  <Link className="mt-4 inline-flex" href="#informations-administratives">Explorer le métier</Link>
+                </Card>
+                <Card className="catalog-card">
+                  <div className="catalog-title">
+                    <h3>Patrons de parcours</h3>
+                    <Badge size="sm">Patron</Badge>
+                  </div>
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    Scénarios complets qui coordonnent plusieurs composants autour d’une tâche usager.
+                  </p>
+                  <Link className="mt-4 inline-flex" href="#démarche-en-ligne">Voir les parcours</Link>
+                </Card>
+                <Card className="catalog-card">
+                  <div className="catalog-title">
+                    <h3>Gabarits institutionnels</h3>
+                    <Badge size="sm" variant="neutral">Gabarit</Badge>
+                  </div>
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    Structures officielles qui garantissent l’identification constante du service public.
+                  </p>
+                  <Link className="mt-4 inline-flex" href="#structure-officielle">Voir les gabarits</Link>
+                </Card>
               </div>
             </section>
 
@@ -1365,11 +1419,11 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
               </Drawer>
             </section>
 
-            <section className="doc-section" id="composants-avancés">
+            <section className="doc-section" aria-labelledby="saisie-et-retours-title">
               <div className="section-heading">
                 <div>
-                  <span className="eyebrow">Composants · Démarches</span>
-                  <h2>Composants avancés</h2>
+                  <span className="eyebrow">Composants de base</span>
+                  <h2 id="saisie-et-retours-title">Saisie et retours</h2>
                 </div>
                 <p>
                   Identification, pièces justificatives, recherche assistée et
@@ -1377,14 +1431,14 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                 </p>
               </div>
               <div className="catalog-grid">
-                <Card className="catalog-card sm:col-span-2">
+                <Card className="catalog-card sm:col-span-2" id="téléversement-de-fichier">
                   <div className="catalog-title">
                     <h3>Téléversement de fichier</h3>
                     <Badge size="sm">FileUpload</Badge>
                   </div>
                   <FileUpload label="Déposez votre copie de CNIB" />
                 </Card>
-                <Card className="catalog-card">
+                <Card className="catalog-card" id="code-de-vérification">
                   <div className="catalog-title">
                     <h3>Code de vérification</h3>
                     <Badge size="sm">OTP</Badge>
@@ -1397,11 +1451,11 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     <Badge size="sm">Champs locaux</Badge>
                   </div>
                   <div className="space-y-4">
-                    <DateField label="Date de naissance" />
-                    <PhoneField />
+                    <div id="champ-de-date"><DateField label="Date de naissance" /></div>
+                    <div id="champ-de-téléphone"><PhoneField /></div>
                   </div>
                 </Card>
-                <Card className="catalog-card">
+                <Card className="catalog-card" id="autocomplétion">
                   <div className="catalog-title">
                     <h3>Autocomplétion</h3>
                     <Badge size="sm">Combobox</Badge>
@@ -1416,7 +1470,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     ]}
                   />
                 </Card>
-                <Card className="catalog-card">
+                <Card className="catalog-card" id="résumé-d’erreurs">
                   <div className="catalog-title">
                     <h3>Résumé d’erreurs</h3>
                     <Badge size="sm">ErrorSummary</Badge>
@@ -1436,7 +1490,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                 </Card>
               </div>
               <div className="mt-4 grid gap-4 lg:grid-cols-2">
-                <Card className="catalog-card">
+                <Card className="catalog-card" id="accordéon">
                   <div className="catalog-title">
                     <h3>Questions fréquentes</h3>
                     <Badge size="sm">Accordion</Badge>
@@ -1470,7 +1524,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     ]}
                   />
                 </Card>
-                <Card className="catalog-card">
+                <Card className="catalog-card" id="état-vide">
                   <div className="catalog-title">
                     <h3>État vide</h3>
                     <Badge size="sm">EmptyState</Badge>
@@ -1492,21 +1546,10 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                   </p>
                 </div>
                 <div className="example-row">
-                  <Button onClick={() => setToastVisible(true)}>
-                    Afficher une notification
-                  </Button>
-                  <Tooltip label="Le traitement prend généralement deux jours ouvrés">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      aria-label="Informations sur le délai"
-                    >
-                      <CircleHelp />
-                    </Button>
-                  </Tooltip>
-                  <Spinner />
-                  <Avatar name="Adama Ouédraogo" />
-                  <Avatar name="Ministère Justice" size="lg" />
+                  <div id="notification"><Button onClick={() => setToastVisible(true)}>Afficher une notification</Button></div>
+                  <div id="infobulle"><Tooltip label="Le traitement prend généralement deux jours ouvrés"><Button variant="outline" size="icon" aria-label="Informations sur le délai"><CircleHelp /></Button></Tooltip></div>
+                  <div id="indicateur-de-chargement"><Spinner /></div>
+                  <div id="avatar" className="flex items-center gap-2"><Avatar name="Adama Ouédraogo" /><Avatar name="Ministère Justice" size="lg" /></div>
                 </div>
               </div>
               {toastVisible ? (
@@ -1528,7 +1571,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                   </p>
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <Card className="catalog-card">
+                  <Card className="catalog-card" id="liste-de-données">
                     <DataList
                       items={[
                         { label: "Référence", value: "BF-2026-0148" },
@@ -1541,26 +1584,26 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     />
                   </Card>
                   <div className="grid gap-3">
-                    <StatCard
+                    <div id="carte-statistique"><StatCard
                       label="Dossiers traités"
                       value="1 248"
                       detail="+12 % ce mois"
                       icon={<FileCheck2 />}
-                    />
+                    /></div>
                     <Separator label="ou" />
-                    <GlobalBanner>
+                    <div id="bannière-globale"><GlobalBanner>
                       Maintenance prévue dimanche de 02 h à 04 h.
-                    </GlobalBanner>
+                    </GlobalBanner></div>
                   </div>
                 </div>
               </div>
             </section>
 
-            <section className="doc-section" id="composants-complémentaires">
+            <section className="doc-section" aria-labelledby="navigation-et-superpositions-title">
               <div className="section-heading">
                 <div>
-                  <span className="eyebrow">Composants · Compléments</span>
-                  <h2>Interactions et services</h2>
+                  <span className="eyebrow">Composants de base</span>
+                  <h2 id="navigation-et-superpositions-title">Navigation et superpositions</h2>
                 </div>
                 <p>
                   Les dernières primitives couvrent la recherche, les dates, les
@@ -1575,7 +1618,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     <Badge size="sm">SearchBox · NavigationMenu</Badge>
                   </div>
                   <div className="space-y-4">
-                    <SearchBox
+                    <div id="barre-de-recherche"><SearchBox
                       options={[
                         {
                           value: "nationalite",
@@ -1594,8 +1637,8 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                         },
                       ]}
                       onSelect={() => undefined}
-                    />
-                    <NavigationMenu
+                    /></div>
+                    <div id="menu-de-navigation"><NavigationMenu
                       items={[
                         {
                           label: "Démarches",
@@ -1614,7 +1657,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                         },
                         { label: "Mes dossiers", href: "#" },
                       ]}
-                    />
+                    /></div>
                   </div>
                 </Card>
                 <Card className="catalog-card">
@@ -1623,21 +1666,21 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     <Badge size="sm">DatePicker · Popover</Badge>
                   </div>
                   <div className="flex flex-wrap gap-3">
-                    <DatePicker
+                    <div id="sélecteur-de-date"><DatePicker
                       value={selectedDate}
                       onValueChange={setSelectedDate}
-                    />
-                    <Popover
+                    /></div>
+                    <div id="fenêtre-contextuelle"><Popover
                       label="Aide"
                       trigger={<Button variant="outline">Pourquoi ?</Button>}
                     >
                       <p className="text-sm text-muted-foreground">
                         Cette date permet de vérifier la validité du document.
                       </p>
-                    </Popover>
+                    </Popover></div>
                   </div>
                 </Card>
-                <Card className="catalog-card">
+                <Card className="catalog-card" id="champ-composé">
                   <div className="catalog-title">
                     <h3>Formulaire composé</h3>
                     <Badge size="sm">FormField</Badge>
@@ -1662,16 +1705,14 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     <Badge size="sm">Tag · FilePreview</Badge>
                   </div>
                   <div className="mb-4 flex flex-wrap gap-2">
-                    <Tag selected>Validé</Tag>
-                    <Tag onRemove={() => undefined}>Kadiogo</Tag>
-                    <Tag disabled>Archivé</Tag>
+                    <span id="étiquette" className="contents"><Tag selected>Validé</Tag><Tag onRemove={() => undefined}>Kadiogo</Tag><Tag disabled>Archivé</Tag></span>
                   </div>
-                  <FilePreview
+                  <div id="aperçu-de-fichier"><FilePreview
                     name="cnib-adama.pdf"
                     type="PDF"
                     size="1,2 Mo"
                     onRemove={() => undefined}
-                  />
+                  /></div>
                 </Card>
                 <Card className="catalog-card">
                   <div className="catalog-title">
@@ -1679,7 +1720,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     <Badge size="sm">NotificationCenter · AlertDialog</Badge>
                   </div>
                   <div className="example-row">
-                    <NotificationCenter
+                    <div id="centre-de-notifications"><NotificationCenter
                       notifications={[
                         {
                           id: "1",
@@ -1690,8 +1731,8 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                         },
                         { id: "2", title: "Paiement reçu", time: "Hier" },
                       ]}
-                    />
-                    <Button
+                    /></div>
+                    <Button id="dialogue-de-confirmation"
                       variant="destructive"
                       onClick={() => setAlertDialogOpen(true)}
                     >
@@ -1709,7 +1750,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                   />
                 </Card>
               </div>
-              <div className="component-doc-block">
+              <div className="component-doc-block" id="informations-administratives">
                 <SectionHeader
                   title="Informations administratives"
                   description="Champs spécialisés pour les services burkinabè."
@@ -1726,7 +1767,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                   <IdentityDocumentField />
                 </div>
               </div>
-              <div className="mt-4 grid gap-4 lg:grid-cols-2">
+              <div className="mt-4 grid gap-4 lg:grid-cols-2" id="dossier-et-paiement">
                 <PaymentSummary
                   items={[
                     { label: "Timbre fiscal", amount: 200 },
@@ -1770,19 +1811,19 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
               </div>
             </section>
 
-            <section className="doc-section" id="nouveautés">
+            <section className="doc-section" id="bibliothèque-métier">
               <div className="section-heading">
                 <div>
-                  <span className="eyebrow">Composants · Nouvelle collection</span>
-                  <h2>Nouveautés</h2>
+                  <span className="eyebrow">Composants métier</span>
+                  <h2>Bibliothèque métier</h2>
                 </div>
                 <p>
-                  Formulaires administratifs, parcours de démarche, navigation
-                  publique et outils de gestion ajoutés à la bibliothèque.
+                  Des composants composés qui traduisent les besoins récurrents
+                  des services publics en interfaces cohérentes.
                 </p>
               </div>
 
-              <div className="component-doc-block">
+              <div className="component-doc-block" id="formulaires-administratifs">
                 <SectionHeader
                   title="Formulaires administratifs"
                   description="Des champs contrôlés adaptés aux données et usages locaux."
@@ -1851,7 +1892,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                 </FormSection>
               </div>
 
-              <div className="mt-4 grid gap-4 lg:grid-cols-2">
+              <div className="mt-4 grid gap-4 lg:grid-cols-2" id="services-aux-citoyens">
                 <ServiceCard
                   badge="100 % en ligne"
                   title="Certificat de nationalité burkinabè"
@@ -1860,7 +1901,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                   fee="500 FCFA"
                   processingTime="5 jours ouvrés"
                   online
-                  href="#nouveautés"
+                  href="#services-aux-citoyens"
                 />
                 <div className="grid gap-4">
                   <ReferenceNumber value="BF-2026-01842" />
@@ -1887,7 +1928,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                 />
               </div>
 
-              <div className="component-doc-block">
+              <div className="component-doc-block" id="éligibilité">
                 <SectionHeader
                   title="Éligibilité"
                   description="Un parcours court, progressif et utilisable au clavier."
@@ -1922,9 +1963,9 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                   <div className="grid content-start gap-5">
                     <BackLink onClick={(event) => event.preventDefault()}>Retour aux démarches</BackLink>
                     <SideNavigation items={[
-                      { label: "Vue d’ensemble", href: "#nouveautés", current: true },
-                      { label: "Mes documents", href: "#nouveautés" },
-                      { label: "Historique", href: "#nouveautés" },
+                      { label: "Vue d’ensemble", href: "#bibliothèque-métier", current: true },
+                      { label: "Mes documents", href: "#services-aux-citoyens" },
+                      { label: "Historique", href: "#dossier-et-paiement" },
                     ]} />
                     <LanguageSwitcher
                       value={language}
@@ -1933,7 +1974,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     />
                     <AnchorNavigation activeId="resultats-demo" items={[
                       { id: "resultats-demo", label: "Résultats" },
-                      { id: "nouveautés", label: "Composants" },
+                      { id: "bibliothèque-métier", label: "Composants" },
                     ]} />
                   </div>
                   <div id="resultats-demo" className="grid gap-4">
@@ -1967,7 +2008,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
             <section className="doc-section" id="structure-officielle">
               <div className="section-heading">
                 <div>
-                  <span className="eyebrow">Composants · Structure</span>
+                  <span className="eyebrow">Gabarits institutionnels</span>
                   <h2>Structure officielle</h2>
                 </div>
                 <p>
@@ -1990,7 +2031,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
             <section className="doc-section" id="démarche-en-ligne">
               <div className="section-heading">
                 <div>
-                  <span className="eyebrow">Patrons métier · Parcours</span>
+                  <span className="eyebrow">Patrons de parcours</span>
                   <h2>Démarche en ligne</h2>
                 </div>
                 <p>
