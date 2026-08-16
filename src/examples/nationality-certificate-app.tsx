@@ -14,11 +14,14 @@ import {
   GovernmentFooter,
   GovernmentHeader,
 } from "@/components/design-system/government-layout";
+import { DocumentChecklist, OfficialNotice } from "@/components/patterns/civic-components";
+import { EligibilityCheck } from "@/components/patterns/eligibility-check";
 import { Alert } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Radio, Select } from "@/components/ui/form-controls";
+import { Select } from "@/components/ui/form-controls";
+import { FormActions, RadioGroup } from "@/components/ui/form-patterns";
 import { Field } from "@/components/ui/input";
 import { Progress } from "@/components/ui/navigation";
 
@@ -116,6 +119,37 @@ function NationalityHome({ onStart }: { onStart: () => void }) {
             <p>Mariage, naturalisation ou décision administrative.</p>
           </Card>
         </div>
+        <div className="mt-8">
+          <EligibilityCheck
+            title="Vérifier avant de commencer"
+            questions={[
+              {
+                id: "link",
+                title: "Quel lien vous rattache au Burkina Faso ?",
+                description: "Cette réponse détermine les justificatifs à préparer.",
+                options: [
+                  { value: "parent", label: "Un de mes parents est burkinabè" },
+                  { value: "birth", label: "Je suis né(e) et réside au Burkina Faso" },
+                  { value: "acquired", label: "Mariage, naturalisation ou décision" },
+                ],
+              },
+              {
+                id: "documents",
+                title: "Disposez-vous d’un acte de naissance ?",
+                options: [
+                  { value: "yes", label: "Oui" },
+                  { value: "no", label: "Non", description: "Le service vous indiquera comment l’obtenir" },
+                ],
+              },
+            ]}
+            evaluate={(answers) => ({
+              eligible: Boolean(answers.link),
+              title: "Votre situation peut être instruite en ligne",
+              description: answers.documents === "yes" ? "Vous pouvez préparer votre dossier dès maintenant." : "Commencez par demander votre acte de naissance, puis revenez poursuivre la démarche.",
+              action: <Button onClick={onStart}>Commencer avec ces réponses</Button>,
+            })}
+          />
+        </div>
       </section>
       <section className="nationality-reassurance">
         <div>
@@ -163,6 +197,7 @@ function NationalityForm({
   setStep: (value: number) => void;
   onHome: () => void;
 }) {
+  const [reason, setReason] = useState("parent");
   const labels = [
     "Situation",
     "Identité",
@@ -204,16 +239,31 @@ function NationalityForm({
               <h2>Quelle est votre situation ?</h2>
               <p>Choisissez le fondement qui correspond à votre demande.</p>
               <div className="nationality-options">
-                <Radio name="reason" defaultChecked>
-                  Je suis né(e) d’un parent burkinabè
-                </Radio>
-                <Radio name="reason">
-                  Je suis né(e) et réside au Burkina Faso, de parents étrangers
-                </Radio>
-                <Radio name="reason">
-                  J’ai acquis la nationalité par mariage ou naturalisation
-                </Radio>
+                <RadioGroup
+                  legend="Fondement de la nationalité"
+                  value={reason}
+                  onValueChange={setReason}
+                  options={[
+                    { value: "parent", label: "Filiation", description: "Je suis né(e) d’un parent burkinabè" },
+                    { value: "birth", label: "Naissance et résidence", description: "Je suis né(e) et réside au Burkina Faso, de parents étrangers" },
+                    { value: "acquired", label: "Nationalité acquise", description: "Mariage, naturalisation ou décision administrative" },
+                  ]}
+                />
               </div>
+            </>
+          ) : step === 5 ? (
+            <>
+              <Badge variant="neutral">Étape 5 sur 5</Badge>
+              <h2>Justificatifs adaptés</h2>
+              <p>La liste dépend de la situation choisie à la première étape.</p>
+              <DocumentChecklist items={[
+                { id: "birth", label: "Acte de naissance", status: "provided", required: true },
+                { id: "identity", label: "CNIB ou passeport", status: "validated", required: true },
+                { id: "basis", label: reason === "parent" ? "Acte de naissance du parent burkinabè" : reason === "birth" ? "Certificat de résidence" : "Décision ou acte justificatif", status: "missing", required: true },
+              ]} />
+              <OfficialNotice title="Avant la transmission">
+                <p>Les originaux pourront être demandés par le tribunal pendant l’instruction.</p>
+              </OfficialNotice>
             </>
           ) : (
             <>
@@ -241,24 +291,14 @@ function NationalityForm({
               </div>
             </>
           )}
-          <div className="nationality-form-actions">
-            {step > 1 ? (
-              <Button variant="outline" onClick={() => setStep(step - 1)}>
-                Retour
-              </Button>
-            ) : (
-              <span />
-            )}
-            {step < 5 ? (
-              <Button onClick={() => setStep(step + 1)}>
-                Continuer <ArrowRight />
-              </Button>
-            ) : (
-              <Button>
-                Transmettre le dossier <ArrowRight />
-              </Button>
-            )}
-          </div>
+          <FormActions
+            className="nationality-form-actions"
+            secondaryLabel={step > 1 ? "Retour" : undefined}
+            onSecondary={() => setStep(Math.max(1, step - 1))}
+            saveLabel="Enregistrer le brouillon"
+            primaryLabel={step < 5 ? "Continuer" : "Transmettre le dossier"}
+            onPrimary={() => step < 5 && setStep(step + 1)}
+          />
         </Card>
       </div>
     </main>
