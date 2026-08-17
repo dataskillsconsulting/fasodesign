@@ -77,7 +77,7 @@ Le socle comprend `Fieldset`, `FormSection`, `RadioGroup`, `CheckboxGroup`, `Pas
 
 ## Parcours de service public
 
-`ServiceCard`, `EligibilityCheck`, `DocumentChecklist`, `ApplicationSummary`, `ReferenceNumber`, `Deadline`, `ContactBlock` et `OfficialNotice` couvrent les principales étapes d’une démarche. `ResponsiveTable`, `FilterPanel`, `BulkActions`, `ResultCount` et `LoadingOverlay` complètent les écrans de gestion.
+`ServiceCard`, `EligibilityCheck`, `DocumentChecklist`, `ApplicationSummary`, `ReferenceNumber`, `Deadline`, `ContactBlock` et `OfficialNotice` couvrent les principales étapes d’une démarche. `AppointmentScheduler` propose une grille de créneaux de rendez-vous accessible au clavier, avec des créneaux indisponibles et un état vide, pilotée par `value` et `onValueChange`. `ResponsiveTable`, `FilterPanel`, `BulkActions`, `ResultCount` et `LoadingOverlay` complètent les écrans de gestion.
 
 Pour la navigation publique, utilisez `SkipLink`, `BackLink`, `SideNavigation`, `LanguageSwitcher` et `AnchorNavigation`. Placez l’application sous `ToastProvider`, puis appelez `useToast()` pour ajouter ou fermer une notification globale.
 

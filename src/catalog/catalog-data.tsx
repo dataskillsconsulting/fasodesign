@@ -10,7 +10,7 @@ export const navigation = [
     "Bouton", "Champ de saisie", "Badge", "Alerte", "Formulaires", "Navigation", "Dialogue", "Tableau",
     "Téléversement de fichier", "Code de vérification", "Champ de date", "Champ de téléphone", "Autocomplétion", "Résumé d’erreurs",
     "Accordéon", "État vide", "Notification", "Infobulle", "Indicateur de chargement", "Avatar", "Liste de données", "Carte statistique", "Bannière globale",
-    "Barre de recherche", "Menu de navigation", "Sélecteur de date", "Fenêtre contextuelle", "Champ composé", "Étiquette", "Aperçu de fichier", "Centre de notifications", "Dialogue de confirmation",
+    "Barre de recherche", "Menu de navigation", "Sélecteur de date", "Prise de rendez-vous", "Fenêtre contextuelle", "Champ composé", "Étiquette", "Aperçu de fichier", "Centre de notifications", "Dialogue de confirmation",
   ] },
   { label: "Composants métier", icon: Box, items: ["Informations administratives", "Dossier et paiement", "Formulaires administratifs", "Services aux citoyens", "Éligibilité"] },
   { label: "Patrons de parcours", icon: Grid2X2, items: ["Démarche en ligne", "Tableau de bord", "Suivi de dossier"] },

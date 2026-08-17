@@ -57,6 +57,7 @@ import {
   Toast,
   Tooltip,
 } from "@/components/ui/advanced";
+import { AppointmentScheduler } from "@/components/ui/appointment-scheduler";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -156,6 +157,7 @@ export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>();
+  const [appointmentSlot, setAppointmentSlot] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("demande");
   const [toastVisible, setToastVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -1698,6 +1700,27 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                       <CircleHelp />
                     </IconButton>
                   </div>
+                </Card>
+                <Card className="catalog-card" id="prise-de-rendez-vous">
+                  <div className="catalog-title">
+                    <h3>Prise de rendez-vous</h3>
+                    <Badge size="sm">AppointmentScheduler</Badge>
+                  </div>
+                  <AppointmentScheduler
+                    title="Choisissez un créneau"
+                    description="Les créneaux restants pour aujourd’hui."
+                    value={appointmentSlot}
+                    onValueChange={setAppointmentSlot}
+                    slots={[
+                      { id: "09-00", label: "09 h 00", period: "Matin" },
+                      { id: "09-30", label: "09 h 30", period: "Matin" },
+                      { id: "10-00", label: "10 h 00", period: "Matin" },
+                      { id: "10-30", label: "10 h 30", period: "Matin", disabled: true },
+                      { id: "14-00", label: "14 h 00", period: "Après-midi" },
+                      { id: "14-30", label: "14 h 30", period: "Après-midi" },
+                      { id: "16-00", label: "16 h 00", period: "Après-midi", disabled: true },
+                    ]}
+                  />
                 </Card>
                 <Card className="catalog-card">
                   <div className="catalog-title">

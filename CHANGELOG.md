@@ -6,6 +6,7 @@ Les changements notables sont documentés ici. Le projet suit [Keep a Changelog]
 
 ### Ajouté
 
+- `AppointmentScheduler` pour la prise de rendez-vous : grille de créneaux accessible au clavier, créneaux indisponibles et état vide.
 - Navigation clavier complète du calendrier et API contrôlée de pagination.
 - Options de focus et de fermeture pour les dialogues et panneaux.
 - Annonce des résultats et fermeture extérieure de `SearchBox`.

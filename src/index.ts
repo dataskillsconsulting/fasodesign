@@ -8,6 +8,7 @@ export * from "./components/patterns/eligibility-check";
 export * from "./components/patterns/service-components";
 export * from "./components/ui/advanced";
 export * from "./components/ui/alert";
+export * from "./components/ui/appointment-scheduler";
 export * from "./components/ui/badge";
 export * from "./components/ui/button";
 export * from "./components/ui/calendar";
