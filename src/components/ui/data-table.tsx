@@ -1,5 +1,5 @@
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -49,17 +49,18 @@ export function DataTable<T>({
 }: DataTableProps<T>) {
   const [internalSort, setInternalSort] = useState<{ key: string; direction: "asc" | "desc" } | null>(null);
   const sort = controlledSort === undefined ? internalSort : controlledSort;
-  const activeColumn = sort ? columns.find((column) => column.key === sort.key) : undefined;
-  const rows = activeColumn?.sortValue
-    ? [...data].sort((a, b) => {
-        const left = activeColumn.sortValue?.(a) ?? "";
-        const right = activeColumn.sortValue?.(b) ?? "";
-        const result = typeof left === "number" && typeof right === "number"
-          ? left - right
-          : String(left).localeCompare(String(right), "fr", { numeric: true });
-        return sort?.direction === "desc" ? -result : result;
-      })
-    : data;
+  const rows = useMemo(() => {
+    const activeColumn = sort ? columns.find((column) => column.key === sort.key) : undefined;
+    if (!activeColumn?.sortValue) return data;
+    return [...data].sort((a, b) => {
+      const left = activeColumn.sortValue?.(a) ?? "";
+      const right = activeColumn.sortValue?.(b) ?? "";
+      const result = typeof left === "number" && typeof right === "number"
+        ? left - right
+        : String(left).localeCompare(String(right), "fr", { numeric: true });
+      return sort?.direction === "desc" ? -result : result;
+    });
+  }, [columns, data, sort]);
 
   function toggleSort(key: string) {
     const next = sort?.key === key ? { key, direction: sort.direction === "asc" ? "desc" as const : "asc" as const } : { key, direction: "asc" as const };

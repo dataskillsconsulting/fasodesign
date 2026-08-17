@@ -8,6 +8,19 @@ Bibliothèque React accessible pour les services publics numériques du Burkina 
 npm install @faso-ui/react
 ```
 
+## Prérequis
+
+Node.js 20.19 ou plus est requis (`.nvmrc` recommande 24). Si vous utilisez
+[nvm](https://github.com/nvm-sh/nvm), activez la bonne version avant de lancer
+les commandes :
+
+```bash
+nvm use
+```
+
+Les scripts du projet vérifient la version de Node au démarrage et affichent
+un message clair si elle est insuffisante.
+
 Importez une fois les styles à la racine de l’application, puis les composants depuis le point d’entrée public :
 
 ```tsx
