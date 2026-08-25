@@ -75,6 +75,13 @@ Pour un tri côté serveur, contrôlez `sort` et rechargez les données dans `on
 
 Le socle comprend `Fieldset`, `FormSection`, `RadioGroup`, `CheckboxGroup`, `PasswordField`, `NumberField`, `CurrencyField`, `MultiSelect`, `DateRangeField`, `TimeField` et `FormActions`. Les valeurs métier restent contrôlées par l’application. `NumberField` et `CurrencyField` acceptent la virgule décimale française sans reformater la valeur pendant la frappe.
 
+## Statut des composants
+
+Le catalogue expose les métadonnées des composants prioritaires dans
+`priorityComponentMetadata` : statut, version d’introduction et états couverts.
+Les composants `Stable` peuvent être utilisés en production ; `Beta` signale une
+API utilisable mais encore susceptible d’évoluer.
+
 ## Parcours de service public
 
 `ServiceCard`, `EligibilityCheck`, `DocumentChecklist`, `ApplicationSummary`, `ReferenceNumber`, `Deadline`, `ContactBlock` et `OfficialNotice` couvrent les principales étapes d’une démarche. `AppointmentScheduler` propose une grille de créneaux de rendez-vous accessible au clavier, avec des créneaux indisponibles et un état vide, pilotée par `value` et `onValueChange`. `ResponsiveTable`, `FilterPanel`, `BulkActions`, `ResultCount` et `LoadingOverlay` complètent les écrans de gestion.

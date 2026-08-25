@@ -2,6 +2,20 @@ import { Accessibility, BookOpen, Box, Component, Grid2X2, Palette } from "lucid
 
 import { Badge } from "@/components/ui/badge";
 import type { DataTableColumn } from "@/components/ui/data-table";
+import { formatDate } from "@/lib/format";
+
+export type ComponentStatus = "Stable" | "Beta" | "Experimental" | "Deprecated";
+export type ComponentMetadata = { name: string; status: ComponentStatus; since: string; states: string[] };
+
+export const priorityComponentMetadata: ComponentMetadata[] = [
+  { name: "Button", status: "Stable", since: "1.0.0", states: ["loading", "disabled", "focus"] },
+  { name: "Input", status: "Stable", since: "1.0.0", states: ["error", "disabled", "focus"] },
+  { name: "Alert", status: "Stable", since: "1.0.0", states: ["information", "success", "warning", "error"] },
+  { name: "Dialog", status: "Stable", since: "1.0.0", states: ["open", "closed", "focus trap"] },
+  { name: "DataTable", status: "Stable", since: "1.0.0", states: ["loading", "empty", "sorting", "selection"] },
+  { name: "EmptyState", status: "Beta", since: "1.0.0", states: ["empty", "with action"] },
+  { name: "StatusTracker", status: "Beta", since: "1.0.0", states: ["current", "complete", "upcoming", "error"] },
+];
 
 export const navigation = [
   { label: "Commencer", icon: BookOpen, items: ["Vue d’ensemble", "Architecture", "Installation", "Principes"] },
@@ -51,7 +65,7 @@ export const requestColumns: DataTableColumn<(typeof requestRows)[number]>[] = [
   { key: "reference", header: "Référence", cell: (row) => <code>{row.reference}</code>, sortValue: (row) => row.reference },
   { key: "service", header: "Démarche", cell: (row) => row.service, sortValue: (row) => row.service },
   { key: "status", header: "Statut", cell: (row) => <Badge variant={row.status === "Validé" ? "success" : row.status === "En attente" ? "warning" : "neutral"} size="sm">{row.status}</Badge>, sortValue: (row) => row.status },
-  { key: "updated", header: "Mise à jour", cell: (row) => new Intl.DateTimeFormat("fr-BF", { dateStyle: "medium" }).format(new Date(row.updated)), sortValue: (row) => row.updated },
+  { key: "updated", header: "Mise à jour", cell: (row) => formatDate(row.updated), sortValue: (row) => row.updated },
 ];
 
 export const searchablePages = navigation.flatMap((group) => group.items.map((label) => ({ label, group: group.label, id: label.toLowerCase().replaceAll(" ", "-") })));

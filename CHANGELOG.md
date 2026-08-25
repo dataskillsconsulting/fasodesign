@@ -22,6 +22,9 @@ Les changements notables sont documentés ici. Le projet suit [Keep a Changelog]
 
 ### Modifié
 
+- Le catalogue centralise désormais le statut, la version et les états des composants prioritaires de la phase 2.
+- Les dates du catalogue utilisent le formateur partagé `formatDate`.
+
 - Identifiants uniques pour les groupes d’onglets.
 - Métadonnées du catalogue extraites de l’application principale.
 - Couverture des tests d’interaction et d’accessibilité étendue.
