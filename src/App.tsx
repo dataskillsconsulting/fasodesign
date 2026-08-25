@@ -143,6 +143,13 @@ import {
 import { cn } from "@/lib/utils";
 import { withBaseUrl } from "@/lib/base-url";
 import { FasoMark } from "@/catalog/faso-mark";
+import {
+  AgentDashboardTemplate,
+  ApplicationCreationTemplate,
+  CitizenDashboardTemplate,
+  CitizenPortalTemplate,
+  ServiceDetailTemplate,
+} from "@/templates/reference-templates";
 import { buttonApi, foundations, navigation, requestColumns, requestRows, searchablePages, swatches } from "@/catalog/catalog-data";
 
 type Theme = "light" | "dark";
@@ -2148,6 +2155,30 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                   </p>
                 </div>
               </div>
+            </section>
+
+            <section className="doc-section" id="templates">
+              <div className="section-heading">
+                <div>
+                  <span className="eyebrow">Phase 4 · Référence</span>
+                  <h2>Templates de service</h2>
+                </div>
+                <p>
+                  Des compositions prêtes à adapter pour les parcours citoyens
+                  et les espaces agents. Chaque template conserve les états,
+                  les actions et les contraintes d’accessibilité du système.
+                </p>
+              </div>
+              <div className="reference-template-grid">
+                <CitizenPortalTemplate />
+                <ServiceDetailTemplate />
+                <ApplicationCreationTemplate />
+                <CitizenDashboardTemplate />
+                <AgentDashboardTemplate />
+              </div>
+              <p className="mt-5 text-sm text-muted-foreground">
+                Voir la matrice complète dans <a href="./docs/templates/README.md">la documentation des templates</a>.
+              </p>
             </section>
 
             <section className="doc-section" id="référentiel">

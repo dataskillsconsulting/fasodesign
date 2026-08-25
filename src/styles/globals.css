@@ -764,6 +764,30 @@
   .progress-wrap > div:first-child:not(.progress-track) { display: flex; justify-content: space-between; margin-bottom: .5rem; font-size: .7rem; }
   .progress-track { height: .5rem; overflow: hidden; border-radius: 1rem; background: var(--muted); }
   .progress-track span { display: block; height: 100%; border-radius: inherit; background: var(--success); transition: width 300ms; }
+
+  .reference-template-grid { display: grid; gap: 1.25rem; }
+  .reference-template { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--card); box-shadow: var(--shadow-subtle); }
+  .reference-template-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); padding: .8rem 1rem; font-size: .75rem; }
+  .reference-template-header .badge { font-size: .62rem; }
+  .reference-template-body { padding: 1.25rem; }
+  .reference-template-body h2 { margin-top: .3rem; font-family: var(--font-display); font-size: clamp(1.35rem, 2vw, 1.8rem); letter-spacing: -.03em; }
+  .reference-template-body .pattern-intro { max-width: 42rem; margin-top: .4rem; }
+  .reference-template-body > .alert { margin-top: 1rem; }
+  .reference-template-body > .catalog-grid { margin-top: 1rem; }
+  .reference-template-body .catalog-grid { grid-template-columns: 1fr; gap: .65rem; }
+  .reference-template-body .catalog-grid .card { padding: .85rem; }
+  .reference-template-body .dashboard-stats { margin: 1rem 0; }
+  .reference-template-body .dashboard-stats .card { padding: .85rem; }
+  .reference-template-body .dashboard-stats strong { display: block; font-size: 1.45rem; }
+  .reference-template-body .confirmation-panel { display: grid; justify-items: start; gap: .8rem; margin-top: 1rem; border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; }
+  .reference-template-body .confirmation-panel > svg { color: var(--success); }
+  .reference-template-citizen .pattern-mini-mark { color: var(--primary); }
+  .reference-template-agent { background: var(--muted); }
+  .reference-template-agent .reference-template-body { background: var(--background); }
+  @media (min-width: 900px) {
+    .reference-template-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+    .reference-template-grid .reference-template:first-child { grid-column: span 2; }
+  }
   .skeleton { border-radius: .3rem; background: linear-gradient(90deg, var(--muted), color-mix(in srgb, var(--muted) 45%, var(--background)), var(--muted)); background-size: 200% 100%; animation: skeleton-shimmer 1.5s infinite linear; }
   @keyframes skeleton-shimmer { to { background-position: -200% 0; } }
   .dialog-layer { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 1rem; }

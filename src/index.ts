@@ -30,5 +30,6 @@ export * from "./components/ui/public-navigation";
 export * from "./components/ui/selection-controls";
 export * from "./components/ui/stepper";
 export * from "./components/ui/toast-provider";
+export * from "./templates/reference-templates";
 export * from "./design-system/breakpoints";
 export * from "./lib/format";

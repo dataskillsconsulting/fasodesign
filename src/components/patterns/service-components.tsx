@@ -8,6 +8,7 @@ import { DropdownMenu, DropdownMenuItem, DropdownMenuSeparator } from "@/compone
 import { Field } from "@/components/ui/input";
 import { Select } from "@/components/ui/form-controls";
 import { formatAmount } from "@/lib/format";
+import { ReferenceNumber } from "@/components/patterns/civic-components";
 
 export function Amount({ value, currency = "XOF", locale = "fr-BF", compact = false }: { value: number; currency?: string; locale?: string; compact?: boolean }) { const formatted = currency === "XOF" && locale === "fr-BF" ? formatAmount(value, { notation: compact ? "compact" : "standard" }) : new Intl.NumberFormat(locale, { style: "currency", currency, currencyDisplay: "symbol", maximumFractionDigits: 0, notation: compact ? "compact" : "standard" }).format(value); return <span className="amount">{formatted}</span>; }
 
