@@ -33,3 +33,16 @@ React et peuvent être personnalisés avec `title`, `description` et `children`.
 Chaque template doit être placé dans une route réelle avec les composants de
 domaine adaptés. Les exemples inclus sont volontairement statiques : ils
 servent de référence visuelle et de point de départ, pas de couche de données.
+
+## API commune
+
+Tous les templates acceptent les props suivantes :
+
+| Prop | Type | Usage |
+| --- | --- | --- |
+| `title` | `string` | Remplace le titre de démonstration. |
+| `description` | `string` | Remplace le texte d'introduction de `CitizenPortalTemplate`. |
+| `children` | `ReactNode` | Ajoute du contenu métier à la zone principale. |
+
+Les actions visibles dans les exemples servent à montrer la hiérarchie. Une
+application doit relier ses événements, son routage et ses données métier.

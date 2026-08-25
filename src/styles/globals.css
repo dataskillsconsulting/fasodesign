@@ -766,6 +766,9 @@
   .progress-track span { display: block; height: 100%; border-radius: inherit; background: var(--success); transition: width 300ms; }
 
   .reference-template-grid { display: grid; gap: 1.25rem; }
+  .copyable-code { position: relative; margin-top: 1rem; }
+  .copyable-code .code-block { margin: 0; padding-right: 6.75rem; }
+  .copyable-code-action { position: absolute; top: .65rem; right: .65rem; }
   .reference-template { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--card); box-shadow: var(--shadow-subtle); }
   .reference-template-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); padding: .8rem 1rem; font-size: .75rem; }
   .reference-template-header .badge { font-size: .62rem; }

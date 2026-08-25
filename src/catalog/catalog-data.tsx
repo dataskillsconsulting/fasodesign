@@ -28,7 +28,9 @@ export const navigation = [
   ] },
   { label: "Composants métier", icon: Box, items: ["Informations administratives", "Dossier et paiement", "Formulaires administratifs", "Services aux citoyens", "Éligibilité"] },
   { label: "Patrons de parcours", icon: Grid2X2, items: ["Démarche en ligne", "Tableau de bord", "Suivi de dossier"] },
-  { label: "Gabarits institutionnels", icon: Box, items: ["Structure officielle"] },
+  { label: "Gabarits institutionnels", icon: Box, items: ["Portail de service", "Détail d'une démarche", "Création d'une demande", "Tableau de bord citoyen", "Suivi d'une demande", "Paiement", "Confirmation", "Erreur", "Maintenance", "Tableau de bord agent", "Liste de dossiers", "Recherche administrative", "Consultation d'un dossier", "Traitement d'une demande", "Gestion documentaire"] },
+  { label: "Guides", icon: BookOpen, items: ["Performance", "Contenus", "Développement"] },
+  { label: "Ressources", icon: BookOpen, items: ["Changelog", "Contribuer"] },
   { label: "Accessibilité", icon: Accessibility, items: ["Référentiel", "Rédaction", "Tests"] },
 ];
 

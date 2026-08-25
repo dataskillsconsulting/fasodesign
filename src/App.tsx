@@ -145,20 +145,55 @@ import { withBaseUrl } from "@/lib/base-url";
 import { FasoMark } from "@/catalog/faso-mark";
 import {
   AgentDashboardTemplate,
+  AdministrativeSearchTemplate,
   ApplicationCreationTemplate,
+  ApplicationProcessingTemplate,
+  ApplicationTrackingTemplate,
+  CaseConsultationTemplate,
+  CaseListTemplate,
   CitizenDashboardTemplate,
   CitizenPortalTemplate,
+  ConfirmationTemplate,
+  DocumentManagementTemplate,
+  ErrorTemplate,
+  MaintenanceTemplate,
+  PaymentTemplate,
   ServiceDetailTemplate,
 } from "@/templates/reference-templates";
 import { buttonApi, foundations, navigation, requestColumns, requestRows, searchablePages, swatches } from "@/catalog/catalog-data";
 
 type Theme = "light" | "dark";
 
+const qualityCommands = "npm run typecheck\nnpm run test:a11y\nnpm run build";
+const reactExample = `import { Button } from "@faso-ui/react";
+import "@faso-ui/react/styles.css";
+
+<Button loading={isSaving} loadingText="Enregistrement…">
+  Enregistrer
+</Button>`;
+
+type CopyableCodeProps = {
+  code: string;
+  copied: boolean;
+  onCopy: () => void;
+};
+
+function CopyableCode({ code, copied, onCopy }: CopyableCodeProps) {
+  return (
+    <div className="copyable-code">
+      <pre className="code-block" tabIndex={0}><code>{code}</code></pre>
+      <Button className="copyable-code-action" variant="outline" size="sm" onClick={onCopy}>
+        <Copy size={15} /> {copied ? "Copié" : "Copier"}
+      </Button>
+    </div>
+  );
+}
 
 export default function App() {
   const [theme, setTheme] = useState<Theme>("light");
   const [menuOpen, setMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [copiedSnippet, setCopiedSnippet] = useState<string | null>(null);
   const [noticeVisible, setNoticeVisible] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -214,6 +249,12 @@ export default function App() {
     void navigator.clipboard?.writeText("npm install @faso-ui/react");
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1800);
+  }
+
+  function copySnippet(code: string) {
+    void navigator.clipboard?.writeText(code);
+    setCopiedSnippet(code);
+    window.setTimeout(() => setCopiedSnippet(null), 1800);
   }
 
   return (
@@ -2170,15 +2211,51 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                 </p>
               </div>
               <div className="reference-template-grid">
-                <CitizenPortalTemplate />
-                <ServiceDetailTemplate />
-                <ApplicationCreationTemplate />
-                <CitizenDashboardTemplate />
-                <AgentDashboardTemplate />
+                <div id="portail-de-service"><CitizenPortalTemplate /></div>
+                <div id="détail-d'une-démarche"><ServiceDetailTemplate /></div>
+                <div id="création-d'une-demande"><ApplicationCreationTemplate /></div>
+                <div id="tableau-de-bord-citoyen"><CitizenDashboardTemplate /></div>
+                <div id="suivi-d'une-demande"><ApplicationTrackingTemplate /></div>
+                <div id="paiement"><PaymentTemplate /></div>
+                <div id="confirmation"><ConfirmationTemplate /></div>
+                <div id="erreur"><ErrorTemplate /></div>
+                <div id="maintenance"><MaintenanceTemplate /></div>
+                <div id="tableau-de-bord-agent"><AgentDashboardTemplate /></div>
+                <div id="liste-de-dossiers"><CaseListTemplate /></div>
+                <div id="recherche-administrative"><AdministrativeSearchTemplate /></div>
+                <div id="consultation-d'un-dossier"><CaseConsultationTemplate /></div>
+                <div id="traitement-d'une-demande"><ApplicationProcessingTemplate /></div>
+                <div id="gestion-documentaire"><DocumentManagementTemplate /></div>
               </div>
               <p className="mt-5 text-sm text-muted-foreground">
                 Voir la matrice complète dans <a href="./docs/templates/README.md">la documentation des templates</a>.
               </p>
+            </section>
+
+            <section className="doc-section" id="performance">
+              <div className="section-heading"><div><span className="eyebrow">Guides · Résilience</span><h2>Performance</h2></div><p>Concevez pour les téléphones d’entrée de gamme et les connexions instables.</p></div>
+              <div className="accessibility-checklist"><div><Check /> Charger les données à la demande</div><div><Check /> Prévoir un état de chargement utile</div><div><Check /> Compresser les images et icônes</div><div><Check /> Tester avec une connexion lente</div></div>
+              <CopyableCode code={qualityCommands} copied={copiedSnippet === qualityCommands} onCopy={() => copySnippet(qualityCommands)} />
+            </section>
+
+            <section className="doc-section" id="contenus">
+              <div className="section-heading"><div><span className="eyebrow">Guides · Langage</span><h2>Contenus</h2></div><p>Des mots courts, précis et compréhensibles par les citoyens comme par les agents.</p></div>
+              <div className="button-guidance"><div className="guidance-do"><span><Check /> À faire</span><strong>Ajoutez une copie lisible de votre CNIB.</strong><p>Le document attendu et l’action sont explicites.</p></div><div className="guidance-dont"><span><X /> À éviter</span><strong>Erreur de validation.</strong><p>Le problème et sa résolution restent inconnus.</p></div></div>
+            </section>
+
+            <section className="doc-section" id="développement">
+              <div className="section-heading"><div><span className="eyebrow">Guides · React</span><h2>Développement</h2></div><p>Importez les composants, gardez les données métier dans votre application et respectez les conventions contrôlées.</p></div>
+              <CopyableCode code={reactExample} copied={copiedSnippet === reactExample} onCopy={() => copySnippet(reactExample)} />
+            </section>
+
+            <section className="doc-section" id="changelog">
+              <div className="section-heading"><div><span className="eyebrow">Ressources · Versions</span><h2>Changelog</h2></div><p>Les changements incompatibles, les nouvelles API et les corrections sont publiés avec chaque version.</p></div>
+              <Card className="catalog-card"><div className="catalog-title"><Badge variant="success">Non publié</Badge><h3>Phase 5 · Documentation</h3></div><p>Navigation documentaire complète, templates référencés, exemples copiables et guides de performance, contenu et développement.</p></Card>
+            </section>
+
+            <section className="doc-section" id="contribuer">
+              <div className="section-heading"><div><span className="eyebrow">Ressources · Équipe</span><h2>Contribuer</h2></div><p>Proposez un composant ou un pattern avec son état, ses tests et un exemple réel.</p></div>
+              <div className="accessibility-checklist"><div><Check /> Lire <a href="./CONTRIBUTING.md">CONTRIBUTING.md</a></div><div><Check /> Ajouter les tests clavier et axe</div><div><Check /> Documenter les états et la responsive</div><div><Check /> Mettre à jour le changelog</div></div>
             </section>
 
             <section className="doc-section" id="référentiel">

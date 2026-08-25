@@ -20,5 +20,24 @@ test("aucune violation axe critique", async ({ page }) => {
   expect(results.violations.filter((violation) => ["critical", "serious"].includes(violation.impact ?? ""))).toEqual([]);
 });
 
+test("reste consultable avec un chargement ralenti", async ({ page }) => {
+  await page.route("**/*", async (route) => {
+    const resourceType = route.request().resourceType();
+    if (["script", "stylesheet", "font"].includes(resourceType)) await new Promise((resolve) => setTimeout(resolve, 120));
+    await route.continue();
+  });
+  await page.goto("/", { waitUntil: "networkidle" });
+  await expect(page.getByRole("heading", { name: "Un système de conception pour les services publics" })).toBeVisible();
+});
+
+test.describe("dégradation sans JavaScript", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("explique comment continuer", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByRole("heading", { name: "JavaScript est nécessaire pour consulter le catalogue" })).toBeVisible();
+  });
+});
+
 test("@visual composants clair", async ({ page }) => { await page.goto("/"); await page.locator("#composants-complémentaires").scrollIntoViewIfNeeded(); await page.waitForTimeout(300); await expect(page).toHaveScreenshot("composants-clair.png", { animations: "disabled", caret: "hide", timeout: 15_000 }); });
 test("@visual composants sombre", async ({ page }) => { await page.goto("/"); await page.evaluate(() => document.documentElement.classList.add("dark")); await page.locator("#composants-complémentaires").scrollIntoViewIfNeeded(); await page.waitForTimeout(300); await expect(page).toHaveScreenshot("composants-sombre.png", { animations: "disabled", caret: "hide", timeout: 15_000 }); });

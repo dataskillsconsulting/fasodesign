@@ -33,3 +33,4 @@ export * from "./components/ui/toast-provider";
 export * from "./templates/reference-templates";
 export * from "./design-system/breakpoints";
 export * from "./lib/format";
+export * from "./lib/use-resilient-request";

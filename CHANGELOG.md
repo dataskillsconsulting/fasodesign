@@ -6,6 +6,13 @@ Les changements notables sont documentés ici. Le projet suit [Keep a Changelog]
 
 ### Ajouté
 
+- Documentation Phase 5 : navigation structurée, guides Performance / Contenus / Développement, ressources de contribution et galerie des templates de référence.
+- Boutons de copie pour les exemples de commandes et d'intégration React, guide de migration et exposition des 15 templates dans le catalogue.
+- Hooks `usePersistentDraft` et `useIdempotentSubmission` pour préserver les brouillons et éviter les doubles transmissions, accompagnés d'un guide de résilience.
+- Budget gzip du catalogue pour le CSS et le JavaScript, vérifié dans la CI et avant publication.
+- Message de continuité sans JavaScript et tests E2E de chargement ralenti et de dégradation sans JavaScript.
+- Paquet de tokens Figma, contrôle de validité dans la CI et protocole de synchronisation Design / Code.
+
 - Documentation complète des 12 patterns prioritaires de démarches citoyennes.
 
 - Tokens de palette nommés, conventions de contribution et checklist qualité par composant.

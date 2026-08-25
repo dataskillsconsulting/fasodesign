@@ -124,7 +124,11 @@ démarche.
 
 Chaque template doit exister en Figma, en React et dans la documentation.
 
-## Phase 5 — Documentation et site FasoDesign
+Les 15 templates React et leur documentation sont disponibles. La bibliothèque
+Figma et la synchronisation Design / Code restent à réaliser dans la phase 7 ;
+la phase 4 n’est donc pas encore validée comme terminée.
+
+## Phase 5 — Documentation et site FasoDesign ✅
 
 Structure recommandée :
 
@@ -143,7 +147,7 @@ Ressources
 Contribuer
 ```
 
-Améliorations : recherche, exemples copiables, aperçu des états, statut des composants, exemples mobile / desktop, documentation des props, liens vers les tests, changelog et guide de migration.
+Améliorations livrées : recherche, exemples copiables, aperçu des états, statut des composants, exemples mobile / desktop, documentation des props, liens vers les tests, changelog et guide de contribution. Les rubriques sont disponibles dans le catalogue React et dans [`docs/templates/README.md`](./docs/templates/README.md).
 
 ## Phase 6 — Performance, connexion limitée et résilience
 
@@ -156,6 +160,14 @@ Améliorations : recherche, exemples copiables, aperçu des états, statut des c
 - Empêcher les doubles soumissions et doubles paiements.
 - Prévoir une dégradation sans JavaScript lorsque pertinent.
 - Ajouter des tests de performance au pipeline CI.
+
+Premiers livrables : hooks React pour brouillons persistants et soumissions
+idempotentes, avec tests et guide d’intégration dans
+[`docs/guides/resilience.md`](./docs/guides/resilience.md). Un budget gzip de
+30 kB CSS et 130 kB JavaScript est vérifié dans la CI. Les tests réseau réels
+et les scénarios de dégradation sans JavaScript sont couverts par les tests
+E2E. La dégradation fonctionnelle des démarches métier reste à vérifier avec
+chaque administration.
 
 ## Phase 7 — Figma et synchronisation Design / Code
 
@@ -175,6 +187,11 @@ Tokens
 - Documenter les composants et patterns.
 - Relier les composants Figma aux composants React.
 - Définir un processus de synchronisation.
+
+Premiers livrables : paquet de tokens portable dans
+[`figma/tokens.json`](./figma/tokens.json), validation CI et protocole dans
+[`docs/figma-sync.md`](./docs/figma-sync.md). La création de la bibliothèque
+et les mappings Code Connect attendent une connexion à un fichier Figma publié.
 
 ## Phase 8 — Gouvernance et adoption
 
