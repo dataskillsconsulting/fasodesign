@@ -6,6 +6,8 @@ Les changements notables sont documentés ici. Le projet suit [Keep a Changelog]
 
 ### Ajouté
 
+- Documentation complète des 12 patterns prioritaires de démarches citoyennes.
+
 - Tokens de palette nommés, conventions de contribution et checklist qualité par composant.
 - Formateurs publics et cohérents pour les montants FCFA, les dates `fr-BF` et les numéros burkinabè.
 - Focus ring global et respect de `prefers-reduced-motion`.

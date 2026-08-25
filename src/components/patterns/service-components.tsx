@@ -22,3 +22,7 @@ export { DropdownMenuItem as ActionMenuItem, DropdownMenuSeparator as ActionMenu
 
 export type StatusTrackerItem = { title: string; description?: string; date?: string; status: "complete" | "current" | "upcoming" | "error" };
 export function StatusTracker({ items, label = "Historique du dossier" }: { items: StatusTrackerItem[]; label?: string }) { return <ol className="status-tracker" aria-label={label}>{items.map((item, index) => <li key={`${item.title}-${index}`} className={item.status} aria-current={item.status === "current" ? "step" : undefined}>{item.status === "complete" ? <Check /> : item.status === "error" ? <CircleAlert /> : <Clock3 />}<div><strong>{item.title}</strong>{item.description ? <p>{item.description}</p> : null}{item.date ? <time>{item.date}</time> : null}</div>{item.status === "current" ? <Badge variant="information" size="sm">En cours</Badge> : null}</li>)}</ol>; }
+
+export function ApplicationTracking({ reference, service, status, items, action }: { reference: string; service: string; status: ReactNode; items: StatusTrackerItem[]; action?: ReactNode }) {
+  return <section className="application-tracking" aria-labelledby="application-tracking-title"><header><div><h2 id="application-tracking-title">Suivi de votre demande</h2><p>{service}</p></div><div>{status}</div></header><ReferenceNumber value={reference} /><StatusTracker items={items} />{action ? <footer>{action}</footer> : null}</section>;
+}

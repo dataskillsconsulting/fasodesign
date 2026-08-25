@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 
-import { CheckboxGroup, CurrencyField, FormActions, NumberField, PasswordField, RadioGroup } from "@/components/ui/form-patterns";
+import { AdministrativeForm, CheckboxGroup, CurrencyField, FormActions, NumberField, PasswordField, RadioGroup } from "@/components/ui/form-patterns";
 
 const options = [{ value: "sms", label: "SMS", description: "Recevoir un message" }, { value: "email", label: "Courriel" }];
 
@@ -14,6 +14,7 @@ function ChoiceHarness() {
 }
 
 describe("composants de formulaire", () => {
+  it("pilote un formulaire administratif multi-étapes", async () => { const user = userEvent.setup(); const change = vi.fn(); render(<AdministrativeForm steps={[{ label: "Identité" }, { label: "Pièces" }]} currentStep={1} onStepChange={change}>Contenu</AdministrativeForm>); expect(screen.getByRole("navigation", { name: "Progression de la démarche" })).toBeInTheDocument(); await user.click(screen.getByRole("button", { name: "Continuer" })); expect(change).toHaveBeenCalledWith(2); });
   it("contrôle les groupes de choix", async () => { const user = userEvent.setup(); render(<ChoiceHarness />); await user.click(screen.getByRole("radio", { name: "Courriel" })); expect(screen.getByRole("radio", { name: "Courriel" })).toBeChecked(); await user.click(screen.getByRole("checkbox", { name: /SMS/ })); expect(screen.getByRole("checkbox", { name: /SMS/ })).toBeChecked(); });
   it("affiche et masque le mot de passe", async () => { const user = userEvent.setup(); render(<PasswordField label="Mot de passe" defaultValue="secret" />); const input = screen.getByLabelText("Mot de passe"); expect(input).toHaveAttribute("type", "password"); await user.click(screen.getByRole("button", { name: "Afficher le mot de passe" })); expect(input).toHaveAttribute("type", "text"); });
   it("retourne une valeur numérique localisée", async () => { const user = userEvent.setup(); const change = vi.fn(); render(<NumberField label="Quantité" onValueChange={change} />); await user.type(screen.getByLabelText("Quantité"), "12,5"); expect(change).toHaveBeenLastCalledWith(12.5); });

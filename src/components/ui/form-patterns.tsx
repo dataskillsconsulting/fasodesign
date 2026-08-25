@@ -4,6 +4,31 @@ import { useEffect, useId, useRef, useState, type FieldsetHTMLAttributes, type R
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { Stepper, type StepperItem } from "@/components/ui/stepper";
+
+export type AdministrativeFormProps = {
+  steps: StepperItem[];
+  currentStep: number;
+  children: ReactNode;
+  onStepChange?: (step: number) => void;
+  onSave?: () => void;
+  saving?: boolean;
+  className?: string;
+};
+
+/** Shell for a controlled, resumable multi-step public-service form. */
+export function AdministrativeForm({ steps, currentStep, children, onStepChange, onSave, saving = false, className }: AdministrativeFormProps) {
+  const active = Math.min(Math.max(currentStep, 1), steps.length);
+  const isLast = active === steps.length;
+  return <div className={cn("administrative-form", className)} aria-busy={saving || undefined}>
+    <Stepper items={steps} currentStep={active} />
+    <section className="administrative-form-step" aria-labelledby="administrative-form-step-title">
+      <h2 id="administrative-form-step-title" className="sr-only">{steps[active - 1]?.label}</h2>
+      {children}
+    </section>
+    <FormActions primaryLabel={isLast ? "Transmettre la demande" : "Continuer"} primaryLoading={saving} onPrimary={() => onStepChange?.(isLast ? active : active + 1)} secondaryLabel={active > 1 ? "Retour" : undefined} onSecondary={() => onStepChange?.(active - 1)} saveLabel={onSave ? "Enregistrer le brouillon" : undefined} onSave={onSave} />
+  </div>;
+}
 
 export type FieldsetProps = FieldsetHTMLAttributes<HTMLFieldSetElement> & {
   legend: string;

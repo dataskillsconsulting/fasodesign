@@ -39,7 +39,7 @@ Objectif : rendre le système fiable et cohérent avant d'ajouter de nouvelles f
 
 Livrables : `tokens.css` stabilisé, guide de contribution, conventions d'API, checklist qualité par composant et changelog structuré.
 
-## Phase 2 — Renforcer les composants prioritaires
+## Phase 2 — Renforcer les composants prioritaires ✅
 
 ### Priorité 1
 
@@ -71,7 +71,10 @@ Pour chaque composant : documentation, anatomie, variantes, états, responsive, 
 
 Critère de sortie : chaque composant prioritaire est utilisable en production et documenté de manière uniforme.
 
-## Phase 3 — Construire les patterns de démarches
+Les états et conventions de la phase ont été consolidés dans le catalogue, les
+tests et `CONTRIBUTING.md`.
+
+## Phase 3 — Construire les patterns de démarches ✅
 
 Patterns prioritaires :
 
@@ -91,6 +94,10 @@ Patterns prioritaires :
 Chaque pattern documente le problème résolu, les cas d'utilisation, la structure, les composants, les états, le contenu, le mobile et l'accessibilité.
 
 Critère de sortie : un développeur peut assembler une démarche complète sans réinventer son parcours UX.
+
+Les 12 patterns prioritaires sont documentés dans [`docs/patterns/`](./docs/patterns/),
+avec des références React pour le formulaire multi-étapes et le suivi d’une
+démarche.
 
 ## Phase 4 — Créer les templates de référence
 
