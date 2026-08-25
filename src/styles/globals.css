@@ -88,6 +88,20 @@
     font: inherit;
   }
 
+  :where(button, a, input, textarea, select, [tabindex]):focus-visible {
+    outline: var(--focus-ring-width) solid var(--ring);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
   ::selection {
     background: color-mix(in srgb, var(--primary) 24%, transparent);
   }

@@ -6,6 +6,10 @@ Les changements notables sont documentés ici. Le projet suit [Keep a Changelog]
 
 ### Ajouté
 
+- Tokens de palette nommés, conventions de contribution et checklist qualité par composant.
+- Formateurs publics et cohérents pour les montants FCFA, les dates `fr-BF` et les numéros burkinabè.
+- Focus ring global et respect de `prefers-reduced-motion`.
+
 - `AppointmentScheduler` pour la prise de rendez-vous : grille de créneaux accessible au clavier, créneaux indisponibles et état vide.
 - Navigation clavier complète du calendrier et API contrôlée de pagination.
 - Options de focus et de fermeture pour les dialogues et panneaux.

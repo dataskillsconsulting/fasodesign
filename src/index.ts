@@ -31,3 +31,4 @@ export * from "./components/ui/selection-controls";
 export * from "./components/ui/stepper";
 export * from "./components/ui/toast-provider";
 export * from "./design-system/breakpoints";
+export * from "./lib/format";

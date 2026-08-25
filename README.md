@@ -87,6 +87,11 @@ Pour la navigation publique, utilisez `SkipLink`, `BackLink`, `SideNavigation`, 
 
 ## Qualité
 
+Les composants publiés sont suivis par statut (`Stable`, `Beta`, `Experimental` ou
+`Deprecated`). La checklist de revue et les conventions d’API sont dans
+[`CONTRIBUTING.md`](./CONTRIBUTING.md). Les formats partagés `formatAmount`,
+`formatDate` et `formatPhone` sont exportés depuis le point d’entrée public.
+
 ```bash
 npm run typecheck
 npm test
