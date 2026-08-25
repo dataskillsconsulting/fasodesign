@@ -75,7 +75,7 @@ export function DataTable<T>({
 
   return (
     <div className="data-table-wrap">
-      <table className="data-table">
+      <table className="data-table" aria-busy={loading || undefined}>
         {caption ? <caption>{caption}</caption> : null}
         <thead>
           <tr>{selectable ? <th className="data-table-select"><input type="checkbox" aria-label="Sélectionner toutes les lignes" checked={allSelected} onChange={() => onSelectedKeysChange?.(allSelected ? (selectedKeys ?? []).filter((key) => !visibleKeys.includes(key)) : [...new Set([...(selectedKeys ?? []), ...visibleKeys])])} /></th> : null}{columns.map((column) => {

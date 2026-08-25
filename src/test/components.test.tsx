@@ -11,11 +11,29 @@ import { Drawer } from "@/components/ui/drawer";
 import { DropdownMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { SearchBox } from "@/components/ui/primitives";
 import { Pagination, Tabs } from "@/components/ui/navigation";
+import { EmptyState } from "@/components/ui/advanced";
+import { Field } from "@/components/ui/input";
+import { StatusTracker, Amount } from "@/components/patterns/service-components";
 
 function DialogHarness() { const [open, setOpen] = useState(false); return <><Button onClick={() => setOpen(true)}>Ouvrir</Button><Dialog open={open} onOpenChange={setOpen} title="Confirmation"><Button>Confirmer</Button></Dialog></>; }
 function DrawerHarness() { const [open, setOpen] = useState(false); return <><Button onClick={() => setOpen(true)}>Panneau</Button><Drawer open={open} onOpenChange={setOpen} title="Détail"><Button>Fermer</Button></Drawer></>; }
 
 describe("interactions", () => {
+  it("expose les états succès des champs et un état vide sémantique", () => {
+    render(<><Field label="Téléphone" successMessage="Numéro vérifié" defaultValue="70 00 00 00" /><EmptyState title="Aucune demande" description="Commencez une nouvelle démarche." /></>);
+    expect(screen.getByRole("textbox", { name: "Téléphone" })).toHaveAttribute("aria-describedby");
+    expect(screen.getByText("Numéro vérifié")).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Aucune demande" })).toBeInTheDocument();
+  });
+  it("annonce le chargement du tableau et l’étape courante du suivi", () => {
+    render(<><DataTable loading data={[]} getRowKey={() => "x"} columns={[{ key: "name", header: "Nom", cell: () => "" }]} /><StatusTracker items={[{ title: "Dossier reçu", status: "complete" }, { title: "Vérification", status: "current" }]} /></>);
+    expect(screen.getByRole("table")).toHaveAttribute("aria-busy", "true");
+    expect(screen.getByRole("listitem", { current: "step" })).toHaveTextContent("Vérification");
+  });
+  it("affiche les montants en FCFA", () => {
+    render(<Amount value={12500} />);
+    expect(screen.getByText(/12\s*500\s*FCFA/)).toBeInTheDocument();
+  });
   it("ferme le dialogue avec Échap et restaure le focus", async () => { const user = userEvent.setup(); render(<DialogHarness />); const trigger = screen.getByRole("button", { name: "Ouvrir" }); await user.click(trigger); expect(screen.getByRole("dialog")).toBeInTheDocument(); await user.keyboard("{Escape}"); expect(screen.queryByRole("dialog")).not.toBeInTheDocument(); expect(trigger).toHaveFocus(); });
   it("ferme le drawer avec Échap", async () => { const user = userEvent.setup(); render(<DrawerHarness />); await user.click(screen.getByRole("button", { name: "Panneau" })); await user.keyboard("{Escape}"); expect(screen.queryByRole("dialog")).not.toBeInTheDocument(); });
   it("navigue dans le menu au clavier", async () => { const user = userEvent.setup(); const select = vi.fn(); render(<DropdownMenu label="Actions" trigger={<Button>Actions</Button>}><DropdownMenuItem onSelect={select}>Modifier</DropdownMenuItem><DropdownMenuItem>Archiver</DropdownMenuItem></DropdownMenu>); const trigger = screen.getByRole("button", { name: "Actions" }); trigger.focus(); await user.keyboard("{ArrowDown}"); await screen.findByRole("menuitem", { name: "Modifier" }); await new Promise(requestAnimationFrame); await user.keyboard("{Enter}"); expect(select).toHaveBeenCalledOnce(); });
