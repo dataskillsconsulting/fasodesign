@@ -5,12 +5,13 @@ import { cn } from "@/lib/utils";
 
 export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   invalid?: boolean;
+  success?: boolean;
   leadingIcon?: ReactNode;
   trailing?: ReactNode;
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, invalid = false, leadingIcon, trailing, ...props }, ref) => (
+  ({ className, invalid = false, success = false, leadingIcon, trailing, ...props }, ref) => (
     <div className="relative">
       {leadingIcon ? (
         <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-muted-foreground [&_svg]:size-4">
@@ -25,6 +26,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           leadingIcon && "pl-10",
           trailing && "pr-12",
           invalid && "border-destructive focus:border-destructive focus:ring-destructive/15",
+          success && !invalid && "border-success focus:border-success focus:ring-success/15",
           className,
         )}
         {...props}
@@ -43,6 +45,7 @@ export type FieldProps = InputProps & {
   label: string;
   hint?: string;
   error?: string;
+  successMessage?: string;
   optional?: boolean;
 };
 
@@ -51,13 +54,14 @@ export function Field({
   label,
   hint,
   error,
+  successMessage,
   optional = false,
   required,
   ...props
 }: FieldProps) {
   const generatedId = useId();
   const id = providedId ?? generatedId;
-  const descriptionId = hint || error ? `${id}-description` : undefined;
+  const descriptionId = hint || error || successMessage ? `${id}-description` : undefined;
 
   return (
     <div className="field">
@@ -69,11 +73,14 @@ export function Field({
         id={id}
         required={required}
         invalid={Boolean(error)}
+        success={Boolean(successMessage)}
         aria-describedby={descriptionId}
         {...props}
       />
       {error ? (
         <p className="field-message error" id={descriptionId}>{error}</p>
+      ) : successMessage ? (
+        <p className="field-message success" id={descriptionId}>{successMessage}</p>
       ) : hint ? (
         <p className="field-message" id={descriptionId}>{hint}</p>
       ) : null}

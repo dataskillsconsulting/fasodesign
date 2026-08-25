@@ -160,7 +160,8 @@ export function Accordion({ items, value, defaultValue = [items[0]?.id ?? "0"], 
 }
 
 export function EmptyState({ icon = <FileUp />, title, description, action }: { icon?: ReactNode; title: string; description: string; action?: ReactNode }) {
-  return <div className="empty-state"><span>{icon}</span><h3>{title}</h3><p>{description}</p>{action}</div>;
+  const titleId = `empty-state-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+  return <section className="empty-state" aria-labelledby={titleId}><span aria-hidden="true">{icon}</span><h3 id={titleId}>{title}</h3><p>{description}</p>{action}</section>;
 }
 
 export function Spinner({ label = "Chargement en cours" }: { label?: string }) {

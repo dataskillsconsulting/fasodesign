@@ -638,6 +638,7 @@
     color: var(--destructive);
     font-weight: 600;
   }
+  .field-message.success { color: var(--success); font-weight: 600; }
   .field-message.error::before {
     content: "●";
     margin-right: .4rem;
