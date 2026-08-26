@@ -24,7 +24,7 @@ Critère de sortie : chaque composant possède un statut, une priorité et un pr
 
 Référence livrée dans [`PHASE-0-AUDIT.md`](./PHASE-0-AUDIT.md).
 
-## Phase 1 — Stabiliser le socle
+## Phase 1 — Stabiliser le socle ✅
 
 Objectif : rendre le système fiable et cohérent avant d'ajouter de nouvelles fonctionnalités.
 
@@ -38,6 +38,11 @@ Objectif : rendre le système fiable et cohérent avant d'ajouter de nouvelles f
 - Ajouter les statuts et versions dans la documentation.
 
 Livrables : `tokens.css` stabilisé, guide de contribution, conventions d'API, checklist qualité par composant et changelog structuré.
+
+Les conventions et la matrice de qualité sont publiées dans
+[`docs/api-conventions.md`](./docs/api-conventions.md) et
+[`docs/component-quality.md`](./docs/component-quality.md). Le contrat de
+tokens est vérifié dans la CI.
 
 ## Phase 2 — Renforcer les composants prioritaires ✅
 
@@ -166,8 +171,8 @@ idempotentes, avec tests et guide d’intégration dans
 [`docs/guides/resilience.md`](./docs/guides/resilience.md). Un budget gzip de
 30 kB CSS et 130 kB JavaScript est vérifié dans la CI. Les tests réseau réels
 et les scénarios de dégradation sans JavaScript sont couverts par les tests
-E2E. La dégradation fonctionnelle des démarches métier reste à vérifier avec
-chaque administration.
+E2E. `OnlineApplicationPattern` les intègre en exemple. La dégradation
+fonctionnelle des démarches métier reste à vérifier avec chaque administration.
 
 ## Phase 7 — Figma et synchronisation Design / Code
 

@@ -14,6 +14,8 @@ Les changements notables sont documentés ici. Le projet suit [Keep a Changelog]
 - Paquet de tokens Figma, contrôle de validité dans la CI et protocole de synchronisation Design / Code.
 - Cadre de gouvernance : comité de validation, RFC, cycle de dépréciation, checklist de pull request et demande structurée d’administration.
 - Modèles de roadmap trimestrielle et de test utilisateur sans données personnelles.
+- Conventions API, matrice de qualité des composants et contrat de tokens vérifié dans la CI.
+- Pattern de démarche en ligne relié aux brouillons persistants, à la certification et aux soumissions idempotentes.
 
 - Documentation complète des 12 patterns prioritaires de démarches citoyennes.
 

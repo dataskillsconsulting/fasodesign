@@ -843,6 +843,7 @@
   .application-content > h3 { margin-top: .45rem; font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; letter-spacing: -.035em; }
   .pattern-intro { margin-top: .55rem; max-width: 35rem; color: var(--muted-foreground); font-size: .75rem; line-height: 1.65; }
   .application-actions { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: auto; border-top: 1px solid var(--border); padding-top: 1.25rem; }
+  .application-save-status { margin-top: .75rem; color: var(--success); font-size: .72rem; font-weight: 700; }
   .upload-list { display: grid; gap: .75rem; margin-top: 1.5rem; }
   .upload-list > div { display: flex; align-items: center; gap: .75rem; border: 1px solid var(--border); border-radius: .65rem; padding: .8rem; }
   .upload-list > div > span { display: grid; width: 2.2rem; height: 2.2rem; flex: none; place-items: center; border-radius: .5rem; background: var(--muted); color: var(--primary); }

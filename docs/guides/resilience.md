@@ -45,6 +45,10 @@ const submission = useIdempotentSubmission(async (request, context) => {
 Le serveur doit mémoriser cette clé et retourner le même résultat à une requête
 répétée. C’est indispensable pour les paiements et les transmissions de dossier.
 
+`OnlineApplicationPattern` montre cette intégration de bout en bout : le
+brouillon est enregistré explicitement, la certification est exigée avant la
+transmission et l’action affiche son état de chargement.
+
 ## Checklist de mise en production
 
 - Afficher l’enregistrement du brouillon et ne jamais le supposer implicite.

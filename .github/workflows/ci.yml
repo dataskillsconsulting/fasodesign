@@ -37,6 +37,9 @@ jobs:
       - name: Contrat de tokens Figma
         run: npm run check:figma-tokens
 
+      - name: Contrat de tokens de conception
+        run: npm run check:tokens
+
       - name: Valider le paquet npm
         run: npm run check:package
 

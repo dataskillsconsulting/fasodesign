@@ -24,12 +24,41 @@ import { Card } from "@/components/ui/card";
 import { Checkbox, Select } from "@/components/ui/form-controls";
 import { Field, Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/navigation";
+import { useIdempotentSubmission, usePersistentDraft } from "@/lib/use-resilient-request";
 import { cn } from "@/lib/utils";
 
 const applicationSteps = ["Identité", "Justificatifs", "Vérification", "Confirmation"];
+const onlineApplicationDraftKey = "faso-ui:certificate-application:v1";
+const initialApplicationDraft = { step: 1, familyName: "", firstName: "", birthDate: "", sex: "", certified: false };
+const demoSubmission = async () => ({ reference: "BF-2026-0148" });
 
-export function OnlineApplicationPattern() {
-  const [step, setStep] = useState(1);
+export type OnlineApplicationDraft = typeof initialApplicationDraft;
+export type OnlineApplicationPatternProps = {
+  draftKey?: string;
+  onSubmit?: (draft: OnlineApplicationDraft, context: { idempotencyKey: string }) => Promise<{ reference: string }>;
+};
+
+export function OnlineApplicationPattern({ draftKey = onlineApplicationDraftKey, onSubmit = demoSubmission }: OnlineApplicationPatternProps) {
+  const draft = usePersistentDraft(draftKey, { initialValue: initialApplicationDraft });
+  const submission = useIdempotentSubmission(onSubmit);
+  const [reference, setReference] = useState("BF-2026-0148");
+  const step = draft.value.step;
+
+  function changeStep(nextStep: number) {
+    const nextDraft = { ...draft.value, step: nextStep };
+    draft.setValue(nextDraft);
+    draft.save(nextDraft);
+  }
+
+  function submitApplication() {
+    void submission.submit(draft.value)
+      .then((result) => {
+        setReference(result.reference);
+        draft.clear();
+        draft.setValue({ ...initialApplicationDraft, step: 4 });
+      })
+      .catch(() => undefined);
+  }
 
   return (
     <div className="pattern-shell">
@@ -62,10 +91,10 @@ export function OnlineApplicationPattern() {
               <h3>Vérifiez votre identité</h3>
               <p className="pattern-intro">Ces informations doivent correspondre exactement à celles indiquées sur votre CNIB.</p>
               <div className="mt-6 grid gap-5 sm:grid-cols-2">
-                <Field label="Nom de naissance" placeholder="Ex. Ouédraogo" />
-                <Field label="Prénom(s)" placeholder="Ex. Adama" />
-                <Field label="Date de naissance" type="date" />
-                <div><label className="mb-2 block text-xs font-bold" htmlFor="sexe">Sexe</label><Select id="sexe" defaultValue=""><option value="" disabled>Sélectionner</option><option>Féminin</option><option>Masculin</option></Select></div>
+                <Field label="Nom de naissance" placeholder="Ex. Ouédraogo" value={draft.value.familyName} onChange={(event) => draft.setValue((value) => ({ ...value, familyName: event.target.value }))} />
+                <Field label="Prénom(s)" placeholder="Ex. Adama" value={draft.value.firstName} onChange={(event) => draft.setValue((value) => ({ ...value, firstName: event.target.value }))} />
+                <Field label="Date de naissance" type="date" value={draft.value.birthDate} onChange={(event) => draft.setValue((value) => ({ ...value, birthDate: event.target.value }))} />
+                <div><label className="mb-2 block text-xs font-bold" htmlFor="sexe">Sexe</label><Select id="sexe" value={draft.value.sex} onChange={(event) => draft.setValue((value) => ({ ...value, sex: event.target.value }))}><option value="" disabled>Sélectionner</option><option>Féminin</option><option>Masculin</option></Select></div>
               </div>
             </>
           ) : step === 2 ? (
@@ -88,21 +117,23 @@ export function OnlineApplicationPattern() {
                 <div><dt>Pièces jointes</dt><dd>2 documents ajoutés</dd><button>Modifier</button></div>
                 <div><dt>Frais de dossier</dt><dd>1 000 FCFA</dd></div>
               </dl>
-              <Checkbox className="mt-5">Je certifie l’exactitude des informations fournies.</Checkbox>
+              <Checkbox className="mt-5" checked={draft.value.certified} onChange={(event) => draft.setValue((value) => ({ ...value, certified: event.target.checked }))}>Je certifie l’exactitude des informations fournies.</Checkbox>
             </>
           ) : (
             <div className="confirmation-panel">
               <span><CheckCircle2 /></span>
               <Badge variant="success">Demande transmise</Badge>
               <h3>Votre dossier est enregistré</h3>
-              <p>La référence <strong>BF-2026-0148</strong> vous permet de suivre son traitement.</p>
+              <p>La référence <strong>{reference}</strong> vous permet de suivre son traitement.</p>
               <Button variant="outline"><Download /> Télécharger le récépissé</Button>
             </div>
           )}
           <div className="application-actions">
-            {step > 1 && step < 4 ? <Button variant="outline" onClick={() => setStep((value) => value - 1)}><ArrowLeft /> Retour</Button> : <span />}
-            {step < 4 ? <Button onClick={() => setStep((value) => value + 1)}>{step === 3 ? "Transmettre la demande" : "Continuer"} <ArrowRight /></Button> : <Button onClick={() => setStep(1)}>Retour à mes démarches</Button>}
+            {step > 1 && step < 4 ? <Button variant="outline" onClick={() => changeStep(step - 1)}><ArrowLeft /> Retour</Button> : <Button variant="outline" onClick={() => draft.save()}>Enregistrer le brouillon</Button>}
+            {step < 3 ? <Button onClick={() => changeStep(step + 1)}>Continuer <ArrowRight /></Button> : step === 3 ? <Button loading={submission.isSubmitting} loadingText="Transmission…" disabled={!draft.value.certified} onClick={submitApplication}>Transmettre la demande <ArrowRight /></Button> : <Button onClick={() => changeStep(1)}>Retour à mes démarches</Button>}
           </div>
+          {draft.status === "saved" ? <p className="application-save-status" role="status">Brouillon enregistré sur cet appareil.</p> : null}
+          {submission.status === "error" ? <Alert className="mt-4" variant="error" title="Transmission impossible">Votre brouillon est conservé. Vérifiez votre connexion puis réessayez.</Alert> : null}
         </div>
       </div>
     </div>

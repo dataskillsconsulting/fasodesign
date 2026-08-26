@@ -26,6 +26,7 @@
     "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.build.json",
     "check:performance": "npm run build:site && node scripts/check-bundle-budget.mjs",
     "check:figma-tokens": "node scripts/check-figma-tokens.mjs",
+    "check:tokens": "node scripts/check-design-tokens.mjs",
     "check:package": "npm run build:lib && npm pack --dry-run",
     "preview": "vite preview",
     "typecheck": "node scripts/check-node.mjs && tsc --noEmit",
@@ -33,7 +34,7 @@
     "test:a11y": "node scripts/check-node.mjs && vitest run src/test/accessibility.test.tsx",
     "test:e2e": "node scripts/check-node.mjs && playwright test",
     "test:visual": "node scripts/check-node.mjs && playwright test --grep @visual",
-    "check": "npm run typecheck && npm run test && npm run check:figma-tokens && npm run check:performance && npm run build:lib && npm run check:package"
+    "check": "npm run typecheck && npm run test && npm run check:tokens && npm run check:figma-tokens && npm run check:performance && npm run build:lib && npm run check:package"
   },
   "dependencies": {
     "class-variance-authority": "0.7.1",

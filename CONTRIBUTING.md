@@ -27,3 +27,6 @@ Les évolutions qui affectent l’API publique, les tokens, les patterns ou la
 compatibilité suivent le processus décrit dans [`docs/governance.md`](./docs/governance.md).
 Une RFC est requise avant de modifier un composant `Stable` de manière
 incompatible.
+
+Les conventions détaillées sont dans [`docs/api-conventions.md`](./docs/api-conventions.md)
+et la matrice de sortie dans [`docs/component-quality.md`](./docs/component-quality.md).
