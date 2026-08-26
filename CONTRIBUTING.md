@@ -20,3 +20,10 @@ Les variantes utilisent des noms sémantiques (`default`, `secondary`, `outline`
 ## Statuts et versionnage
 
 Un composant est `Stable` quand son API, son accessibilité et ses comportements responsive sont couverts. Une modification compatible incrémente la version mineure, une correction la version patch, et une rupture la version majeure. Toute modification notable est inscrite dans `CHANGELOG.md` selon Keep a Changelog.
+
+## Gouvernance
+
+Les évolutions qui affectent l’API publique, les tokens, les patterns ou la
+compatibilité suivent le processus décrit dans [`docs/governance.md`](./docs/governance.md).
+Une RFC est requise avant de modifier un composant `Stable` de manière
+incompatible.

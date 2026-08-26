@@ -12,6 +12,8 @@ Les changements notables sont documentés ici. Le projet suit [Keep a Changelog]
 - Budget gzip du catalogue pour le CSS et le JavaScript, vérifié dans la CI et avant publication.
 - Message de continuité sans JavaScript et tests E2E de chargement ralenti et de dégradation sans JavaScript.
 - Paquet de tokens Figma, contrôle de validité dans la CI et protocole de synchronisation Design / Code.
+- Cadre de gouvernance : comité de validation, RFC, cycle de dépréciation, checklist de pull request et demande structurée d’administration.
+- Modèles de roadmap trimestrielle et de test utilisateur sans données personnelles.
 
 - Documentation complète des 12 patterns prioritaires de démarches citoyennes.
 

@@ -205,6 +205,13 @@ et les mappings Code Connect attendent une connexion à un fichier Figma publié
 - Organiser des tests utilisateurs réguliers.
 - Publier une roadmap trimestrielle.
 
+Premiers livrables : gouvernance, cycle de dépréciation, modèle de RFC,
+checklist de pull request et modèle de demande d’administration. Voir
+[`docs/governance.md`](./docs/governance.md). Les modèles de roadmap
+trimestrielle et de test utilisateur sont disponibles dans
+[`docs/adoption/`](./docs/adoption/). La mise en place effective du comité et
+la collecte de retours restent une responsabilité organisationnelle.
+
 ## Priorités immédiates
 
 1. Auditer les composants actuels.
