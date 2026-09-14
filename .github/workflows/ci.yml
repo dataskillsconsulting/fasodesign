@@ -1,0 +1,65 @@
+name: Vérification continue
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v6
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Vérifier les types
+        run: npm run typecheck
+
+      - name: Tests unitaires
+        run: npm test
+
+      - name: Tests d’accessibilité
+        run: npm run test:a11y
+
+      - name: Budget de performance
+        run: npm run check:performance
+
+      - name: Contrat de tokens Figma
+        run: npm run check:figma-tokens
+
+      - name: Contrat de tokens de conception
+        run: npm run check:tokens
+
+      - name: Valider le paquet npm
+        run: npm run check:package
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v6
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Installer les navigateurs Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Tests de bout en bout
+        run: npm run test:e2e -- --project=chromium --project=mobile

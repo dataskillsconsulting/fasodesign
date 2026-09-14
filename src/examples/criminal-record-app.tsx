@@ -20,6 +20,14 @@ import {
   GovernmentFooter,
   GovernmentHeader,
 } from "@/components/design-system/government-layout";
+import {
+  ApplicationSummary,
+  ContactBlock,
+  Deadline,
+  DocumentChecklist,
+  ReferenceNumber,
+} from "@/components/patterns/civic-components";
+import { StatusTracker } from "@/components/patterns/service-components";
 import { Alert } from "@/components/ui/alert";
 import { FileUpload, OtpInput, PhoneField } from "@/components/ui/advanced";
 import { Badge } from "@/components/ui/badge";
@@ -399,7 +407,13 @@ function DocumentsStep() {
         title="Vos justificatifs"
         description="Ajoutez des fichiers nets et complets. Chaque fichier doit peser moins de 5 Mo."
       />
-      <div className="space-y-5">
+      <DocumentChecklist
+        items={[
+          { id: "identity", label: "CNIB ou passeport", description: "Recto et verso, en cours de validité", status: "missing", required: true },
+          { id: "birth", label: "Acte de naissance", description: "Extrait ou jugement supplétif lisible", status: "missing", required: true },
+        ]}
+      />
+      <div className="mt-5 space-y-5">
         <div>
           <h3 className="ecasier-upload-title">
             CNIB ou passeport{" "}
@@ -431,45 +445,36 @@ function SummaryStep() {
         title="Vérifiez votre demande"
         description="Relisez attentivement les informations avant de passer au paiement."
       />
-      <div className="ecasier-summary">
-        <section>
-          <div>
-            <h3>Identité</h3>
-            <button>Modifier</button>
-          </div>
-          <dl>
-            <div>
-              <dt>Nom complet</dt>
-              <dd>Adama Ouédraogo</dd>
-            </div>
-            <div>
-              <dt>Naissance</dt>
-              <dd>14 mai 1991 à Ouagadougou</dd>
-            </div>
-            <div>
-              <dt>Téléphone</dt>
-              <dd>+226 70 00 00 00</dd>
-            </div>
-          </dl>
-        </section>
-        <section>
-          <div>
-            <h3>Documents</h3>
-            <button>Modifier</button>
-          </div>
-          <p>
-            <FileText /> cnib-adama.pdf <CheckCircle2 />
-          </p>
-          <p>
-            <FileText /> acte-naissance.pdf <CheckCircle2 />
-          </p>
-        </section>
-        <section className="ecasier-price">
-          <span>Montant total</span>
-          <strong>500 FCFA</strong>
-          <small>Quittance 300 FCFA + timbre fiscal 200 FCFA</small>
-        </section>
-      </div>
+      <ApplicationSummary sections={[
+        {
+          id: "identity",
+          title: "Identité",
+          onEdit: () => undefined,
+          items: [
+            { label: "Nom complet", value: "Adama Ouédraogo" },
+            { label: "Naissance", value: "14 mai 1991 à Ouagadougou" },
+            { label: "Téléphone", value: "+226 70 00 00 00" },
+          ],
+        },
+        {
+          id: "documents",
+          title: "Documents",
+          onEdit: () => undefined,
+          items: [
+            { label: "Identité", value: "cnib-adama.pdf" },
+            { label: "État civil", value: "acte-naissance.pdf" },
+          ],
+        },
+        {
+          id: "payment",
+          title: "Paiement",
+          items: [
+            { label: "Quittance", value: "300 FCFA" },
+            { label: "Timbre fiscal", value: "200 FCFA" },
+            { label: "Total", value: <strong>500 FCFA</strong> },
+          ],
+        },
+      ]} />
       <Checkbox className="mt-5">
         Je certifie que les informations fournies sont exactes.
       </Checkbox>
@@ -530,10 +535,7 @@ function ConfirmationStep({ onHome }: { onHome: () => void }) {
         Un message de confirmation a été envoyé au{" "}
         <strong>+226 70 00 00 00</strong>.
       </p>
-      <div>
-        <small>Référence de suivi</small>
-        <strong>ECJ-2026-004821</strong>
-      </div>
+      <ReferenceNumber value="ECJ-2026-004821" label="Référence de suivi" />
       <Alert title="Conservez cette référence">
         Elle vous permettra de suivre votre demande et de télécharger votre
         document.
@@ -576,37 +578,22 @@ function TrackingView({ onHome }: { onHome: () => void }) {
           <span>Référence ECJ-2026-004821</span>
         </div>
         <Progress value={66} label="Progression du dossier" />
-        <ol>
-          <li className="done">
-            <Check />
-            <div>
-              <strong>Demande transmise</strong>
-              <small>25 juillet 2026 · 14:32</small>
-            </div>
-          </li>
-          <li className="done">
-            <Check />
-            <div>
-              <strong>Paiement confirmé</strong>
-              <small>25 juillet 2026 · 14:35</small>
-            </div>
-          </li>
-          <li className="current">
-            <Clock3 />
-            <div>
-              <strong>Vérification par le greffe</strong>
-              <small>Traitement en cours</small>
-            </div>
-          </li>
-          <li>
-            <FileCheck2 />
-            <div>
-              <strong>Document disponible</strong>
-              <small>Étape à venir</small>
-            </div>
-          </li>
-        </ol>
+        <Deadline duration="24 à 48 heures" description="Délai estimé après validation du paiement." />
+        <StatusTracker items={[
+          { title: "Demande transmise", date: "25 juillet 2026 · 14:32", status: "complete" },
+          { title: "Paiement confirmé", date: "25 juillet 2026 · 14:35", status: "complete" },
+          { title: "Vérification par le greffe", description: "Traitement en cours", status: "current" },
+          { title: "Document disponible", description: "Étape à venir", status: "upcoming" },
+        ]} />
       </Card>
+      <div className="mx-auto mt-4 max-w-3xl">
+        <ContactBlock
+          organization="Assistance e-Casier"
+          phone="+226 25 40 92 67"
+          email="casierjudiciaire@justice.gov.bf"
+          hours="Du lundi au vendredi, 8 h–16 h"
+        />
+      </div>
     </main>
   );
 }

@@ -1,4 +1,14 @@
 :root {
+  /* Palette publique : une seule source de vérité pour les composants. */
+  --color-brand-700: #006a45;
+  --color-brand-600: #00784e;
+  --color-brand-100: #e8f1ed;
+  --color-neutral-950: #1e2a24;
+  --color-neutral-600: #5f6b65;
+  --color-neutral-200: #d9dfdc;
+  --color-danger-700: #b3202e;
+  --color-warning-500: #f4d35e;
+
   --background: #ffffff;
   --foreground: #1e2a24;
   --card: #ffffff;
@@ -45,20 +55,25 @@
   --control-sm: 2.25rem;
   --control-md: 2.75rem;
   --control-lg: 3.25rem;
+  --target-min: 2.75rem;
   --icon-sm: 0.875rem;
   --icon-md: 1rem;
   --icon-lg: 1.25rem;
 
   --shadow-soft:
-    0 1px 2px rgb(15 23 42 / 0.05),
-    0 12px 32px rgb(15 23 42 / 0.08);
+    0 1px 2px rgb(15 23 42 / 0.05), 0 12px 32px rgb(15 23 42 / 0.08);
   --shadow-raised:
-    0 12px 28px rgb(15 23 42 / 0.12),
-    0 2px 8px rgb(15 23 42 / 0.08);
+    0 12px 28px rgb(15 23 42 / 0.12), 0 2px 8px rgb(15 23 42 / 0.08);
   --opacity-disabled: 0.5;
   --duration-fast: 150ms;
   --duration-base: 200ms;
   --duration-slow: 320ms;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --z-dropdown: 70;
+  --z-popover: 80;
+  --z-overlay: 90;
+  --z-toast: 100;
 }
 
 .dark {
@@ -76,7 +91,7 @@
   --muted-foreground: #aeb8b1;
   --accent: #233a30;
   --accent-foreground: oklch(0.95 0.01 82);
-  --destructive: oklch(0.67 0.2 28);
+  --destructive: oklch(0.58 0.2 28);
   --destructive-foreground: oklch(0.97 0.01 70);
   --success: #5ed39a;
   --success-foreground: oklch(0.18 0.03 150);
@@ -88,10 +103,6 @@
   --input: #465149;
   --ring: #55c995;
 
-  --shadow-soft:
-    0 1px 2px rgb(0 0 0 / 0.28),
-    0 18px 40px rgb(0 0 0 / 0.26);
-  --shadow-raised:
-    0 18px 42px rgb(0 0 0 / 0.34),
-    0 4px 10px rgb(0 0 0 / 0.2);
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.28), 0 18px 40px rgb(0 0 0 / 0.26);
+  --shadow-raised: 0 18px 42px rgb(0 0 0 / 0.34), 0 4px 10px rgb(0 0 0 / 0.2);
 }

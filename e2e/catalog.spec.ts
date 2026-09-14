@@ -7,6 +7,7 @@ test("navigation clavier et superpositions", async ({ page }) => {
   await page.locator("#tableau").getByRole("button", { name: "Actions", exact: true }).click();
   await expect(page.getByRole("menu", { name: "Actions du dossier" })).toBeVisible();
   await page.keyboard.press("Escape");
+  await expect(page.getByRole("menu", { name: "Actions du dossier" })).toBeHidden();
   await page.getByRole("button", { name: "Ouvrir le panneau" }).click();
   await expect(page.getByRole("dialog", { name: "Dossier BF-0148" })).toBeVisible();
   await page.keyboard.press("Escape");
@@ -17,6 +18,25 @@ test("aucune violation axe critique", async ({ page }) => {
   await page.goto("/");
   const results = await new AxeBuilder({ page }).disableRules(["landmark-unique"]).analyze();
   expect(results.violations.filter((violation) => ["critical", "serious"].includes(violation.impact ?? ""))).toEqual([]);
+});
+
+test("reste consultable avec un chargement ralenti", async ({ page }) => {
+  await page.route("**/*", async (route) => {
+    const resourceType = route.request().resourceType();
+    if (["script", "stylesheet", "font"].includes(resourceType)) await new Promise((resolve) => setTimeout(resolve, 120));
+    await route.continue();
+  });
+  await page.goto("/", { waitUntil: "networkidle" });
+  await expect(page.getByRole("heading", { name: "Un système de conception pour les services publics" })).toBeVisible();
+});
+
+test.describe("dégradation sans JavaScript", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("explique comment continuer", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByRole("heading", { name: "JavaScript est nécessaire pour consulter le catalogue" })).toBeVisible();
+  });
 });
 
 test("@visual composants clair", async ({ page }) => { await page.goto("/"); await page.locator("#composants-complémentaires").scrollIntoViewIfNeeded(); await page.waitForTimeout(300); await expect(page).toHaveScreenshot("composants-clair.png", { animations: "disabled", caret: "hide", timeout: 15_000 }); });

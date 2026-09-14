@@ -8,6 +8,19 @@ Bibliothèque React accessible pour les services publics numériques du Burkina 
 npm install @faso-ui/react
 ```
 
+## Prérequis
+
+Node.js 20.19 ou plus est requis (`.nvmrc` recommande 24). Si vous utilisez
+[nvm](https://github.com/nvm-sh/nvm), activez la bonne version avant de lancer
+les commandes :
+
+```bash
+nvm use
+```
+
+Les scripts du projet vérifient la version de Node au démarrage et affichent
+un message clair si elle est insuffisante.
+
 Importez une fois les styles à la racine de l’application, puis les composants depuis le point d’entrée public :
 
 ```tsx
@@ -50,17 +63,48 @@ Pour un tri côté serveur, contrôlez `sort` et rechargez les données dans `on
 
 `Dialog` et `Drawer` ferment avec Échap, piègent le focus, bloquent le défilement de la page et restaurent le focus au déclencheur. `DropdownMenu` prend en charge les flèches, Origine, Fin et Échap. `Popover` convient aux contenus complémentaires courts ; une information indispensable doit rester dans la page.
 
+`Dialog` et `Drawer` acceptent aussi `closeOnBackdrop`, `closeOnEscape`, `initialFocusRef` et `returnFocusRef`. Utilisez `AlertDialog` pour une confirmation importante : le clic sur l’arrière-plan ne la ferme pas.
+
+## Navigation et recherche
+
+`Pagination` est contrôlée avec `page`, `total` et `onPageChange`. Elle condense automatiquement les longues listes de pages. `Tabs` génère des identifiants uniques et prend en charge les flèches, Origine et Fin. `Calendar` prend en charge les flèches, Origine, Fin, Page précédente et Page suivante.
+
+`SearchBox` requiert un nom accessible via `label`, annonce le nombre de résultats et ferme sa liste après une sélection, Échap ou un clic extérieur.
+
+## Formulaires administratifs
+
+Le socle comprend `Fieldset`, `FormSection`, `RadioGroup`, `CheckboxGroup`, `PasswordField`, `NumberField`, `CurrencyField`, `MultiSelect`, `DateRangeField`, `TimeField` et `FormActions`. Les valeurs métier restent contrôlées par l’application. `NumberField` et `CurrencyField` acceptent la virgule décimale française sans reformater la valeur pendant la frappe.
+
+## Statut des composants
+
+Le catalogue expose les métadonnées des composants prioritaires dans
+`priorityComponentMetadata` : statut, version d’introduction et états couverts.
+Les composants `Stable` peuvent être utilisés en production ; `Beta` signale une
+API utilisable mais encore susceptible d’évoluer.
+
+## Parcours de service public
+
+`ServiceCard`, `EligibilityCheck`, `DocumentChecklist`, `ApplicationSummary`, `ReferenceNumber`, `Deadline`, `ContactBlock` et `OfficialNotice` couvrent les principales étapes d’une démarche. `AppointmentScheduler` propose une grille de créneaux de rendez-vous accessible au clavier, avec des créneaux indisponibles et un état vide, pilotée par `value` et `onValueChange`. `ResponsiveTable`, `FilterPanel`, `BulkActions`, `ResultCount` et `LoadingOverlay` complètent les écrans de gestion.
+
+Pour la navigation publique, utilisez `SkipLink`, `BackLink`, `SideNavigation`, `LanguageSwitcher` et `AnchorNavigation`. Placez l’application sous `ToastProvider`, puis appelez `useToast()` pour ajouter ou fermer une notification globale.
+
 ## Dates et montants
 
 `Calendar` manipule des objets `Date` dans le fuseau local du navigateur. Normalisez les dates vers ISO dans la couche métier avant envoi au serveur. `Amount` repose sur `Intl.NumberFormat`, utilise `fr-BF` et `XOF` par défaut, et affiche la devise comme `FCFA`.
 
 ## Qualité
 
+Les composants publiés sont suivis par statut (`Stable`, `Beta`, `Experimental` ou
+`Deprecated`). La checklist de revue et les conventions d’API sont dans
+[`CONTRIBUTING.md`](./CONTRIBUTING.md). Les formats partagés `formatAmount`,
+`formatDate` et `formatPhone` sont exportés depuis le point d’entrée public.
+
 ```bash
 npm run typecheck
 npm test
 npm run test:a11y
 npm run test:e2e
+npm run check:package
 npm run build
 ```
 

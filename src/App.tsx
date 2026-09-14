@@ -4,8 +4,6 @@ import {
   Archive,
   ArrowRight,
   ArrowUpRight,
-  BookOpen,
-  Box,
   Check,
   ChevronRight,
   CircleHelp,
@@ -15,14 +13,11 @@ import {
   Download,
   Ellipsis,
   FileCheck2,
-  Grid2X2,
   Menu,
   Moon,
-  Palette,
   Search,
   Send,
   ShieldCheck,
-  Sparkles,
   Sun,
   X,
 } from "lucide-react";
@@ -38,6 +33,15 @@ import {
   CitizenDashboardPattern,
   OnlineApplicationPattern,
 } from "@/components/patterns/business-patterns";
+import {
+  ContactBlock,
+  Deadline,
+  DocumentChecklist,
+  OfficialNotice,
+  ReferenceNumber,
+  ServiceCard,
+} from "@/components/patterns/civic-components";
+import { EligibilityCheck } from "@/components/patterns/eligibility-check";
 import { Alert } from "@/components/ui/alert";
 import {
   Accordion,
@@ -53,13 +57,19 @@ import {
   Toast,
   Tooltip,
 } from "@/components/ui/advanced";
+import { AppointmentScheduler } from "@/components/ui/appointment-scheduler";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, DataList, Separator, StatCard } from "@/components/ui/content";
 import { Dialog } from "@/components/ui/dialog";
 import { DatePicker } from "@/components/ui/calendar";
-import { DataTable, type DataTableColumn } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table";
+import {
+  FilterPanel,
+  ResponsiveTable,
+  ResultCount,
+} from "@/components/ui/data-tools";
 import { Drawer } from "@/components/ui/drawer";
 import {
   DropdownMenu,
@@ -80,6 +90,14 @@ import {
   Switch,
   Textarea,
 } from "@/components/ui/form-controls";
+import {
+  CheckboxGroup,
+  CurrencyField,
+  FormActions,
+  FormSection,
+  PasswordField,
+  RadioGroup,
+} from "@/components/ui/form-patterns";
 import { Field, Input } from "@/components/ui/input";
 import {
   Breadcrumb,
@@ -100,6 +118,17 @@ import {
   Popover,
   SearchBox,
 } from "@/components/ui/primitives";
+import {
+  AnchorNavigation,
+  BackLink,
+  LanguageSwitcher,
+  SideNavigation,
+} from "@/components/ui/public-navigation";
+import {
+  DateRangeField,
+  MultiSelect,
+  TimeField,
+} from "@/components/ui/selection-controls";
 import { Stepper } from "@/components/ui/stepper";
 import {
   ActionMenu,
@@ -113,171 +142,50 @@ import {
 } from "@/components/patterns/service-components";
 import { cn } from "@/lib/utils";
 import { withBaseUrl } from "@/lib/base-url";
+import { FasoMark } from "@/catalog/faso-mark";
+import {
+  AgentDashboardTemplate,
+  AdministrativeSearchTemplate,
+  ApplicationCreationTemplate,
+  ApplicationProcessingTemplate,
+  ApplicationTrackingTemplate,
+  CaseConsultationTemplate,
+  CaseListTemplate,
+  CitizenDashboardTemplate,
+  CitizenPortalTemplate,
+  ConfirmationTemplate,
+  DocumentManagementTemplate,
+  ErrorTemplate,
+  MaintenanceTemplate,
+  PaymentTemplate,
+  ServiceDetailTemplate,
+} from "@/templates/reference-templates";
+import { buttonApi, foundations, navigation, requestColumns, requestRows, searchablePages, swatches } from "@/catalog/catalog-data";
 
 type Theme = "light" | "dark";
 
-const navigation = [
-  {
-    label: "Commencer",
-    icon: BookOpen,
-    items: ["Vue d’ensemble", "Installation", "Principes"],
-  },
-  {
-    label: "Fondations",
-    icon: Palette,
-    items: ["Couleurs", "Typographie", "Espacement", "Iconographie"],
-  },
-  {
-    label: "Composants",
-    icon: Component,
-    count: 58,
-    items: [
-      "Bouton",
-      "Champ de saisie",
-      "Badge",
-      "Alerte",
-      "Formulaires",
-      "Navigation",
-      "Dialogue",
-      "Tableau",
-      "Composants avancés",
-      "Composants complémentaires",
-      "Structure officielle",
-    ],
-  },
-  {
-    label: "Patrons métier",
-    icon: Grid2X2,
-    items: ["Démarche en ligne", "Tableau de bord", "Suivi de dossier"],
-  },
-  {
-    label: "Accessibilité",
-    icon: Accessibility,
-    items: ["Référentiel", "Rédaction", "Tests"],
-  },
-];
+const qualityCommands = "npm run typecheck\nnpm run test:a11y\nnpm run build";
+const reactExample = `import { Button } from "@faso-ui/react";
+import "@faso-ui/react/styles.css";
 
-const foundations = [
-  {
-    icon: Palette,
-    title: "Une identité publique",
-    text: "Des couleurs nationales utilisées comme repères, jamais comme décoration.",
-  },
-  {
-    icon: Accessibility,
-    title: "Accessible d’abord",
-    text: "Contrastes AA, clavier, français clair et zones tactiles généreuses.",
-  },
-  {
-    icon: Box,
-    title: "Conçu pour durer",
-    text: "Des primitives stables, composables et simples à maintenir.",
-  },
-];
+<Button loading={isSaving} loadingText="Enregistrement…">
+  Enregistrer
+</Button>`;
 
-const swatches = [
-  { name: "Vert institution", value: "#006A45", className: "bg-[#006A45]" },
-  { name: "Vert clair", value: "#E8F1ED", className: "bg-[#E8F1ED]" },
-  { name: "Encre", value: "#1E2A24", className: "bg-[#1E2A24]" },
-  { name: "Gris texte", value: "#5F6B65", className: "bg-[#5F6B65]" },
-  { name: "Gris interface", value: "#D9DFDC", className: "bg-[#D9DFDC]" },
-  { name: "Blanc", value: "#FFFFFF", className: "bg-white border" },
-];
+type CopyableCodeProps = {
+  code: string;
+  copied: boolean;
+  onCopy: () => void;
+};
 
-const buttonApi = [
-  [
-    "variant",
-    '"default" | "secondary" | "outline" | "ghost" | "destructive" | "link"',
-    '"default"',
-  ],
-  [
-    "size",
-    '"sm" | "default" | "lg" | "icon" | "icon-sm" | "icon-lg"',
-    '"default"',
-  ],
-  ["width", '"auto" | "full"', '"auto"'],
-  ["loading", "boolean", "false"],
-  ["loadingText", "ReactNode", "—"],
-];
-
-const requestRows = [
-  {
-    reference: "BF-0148",
-    service: "Certificat de nationalité",
-    status: "Validé",
-    updated: "2026-07-25",
-  },
-  {
-    reference: "BF-0132",
-    service: "Casier judiciaire",
-    status: "En attente",
-    updated: "2026-07-23",
-  },
-  {
-    reference: "BF-0096",
-    service: "Extrait de naissance",
-    status: "Brouillon",
-    updated: "2026-07-18",
-  },
-];
-
-const requestColumns: DataTableColumn<(typeof requestRows)[number]>[] = [
-  {
-    key: "reference",
-    header: "Référence",
-    cell: (row) => <code>{row.reference}</code>,
-    sortValue: (row) => row.reference,
-  },
-  {
-    key: "service",
-    header: "Démarche",
-    cell: (row) => row.service,
-    sortValue: (row) => row.service,
-  },
-  {
-    key: "status",
-    header: "Statut",
-    cell: (row) => (
-      <Badge
-        variant={
-          row.status === "Validé"
-            ? "success"
-            : row.status === "En attente"
-              ? "warning"
-              : "neutral"
-        }
-        size="sm"
-      >
-        {row.status}
-      </Badge>
-    ),
-    sortValue: (row) => row.status,
-  },
-  {
-    key: "updated",
-    header: "Mise à jour",
-    cell: (row) =>
-      new Intl.DateTimeFormat("fr-BF", { dateStyle: "medium" }).format(
-        new Date(row.updated),
-      ),
-    sortValue: (row) => row.updated,
-  },
-];
-
-const searchablePages = navigation.flatMap((group) =>
-  group.items.map((label) => ({
-    label,
-    group: group.label,
-    id: label.toLowerCase().replaceAll(" ", "-"),
-  })),
-);
-
-function FasoMark() {
+function CopyableCode({ code, copied, onCopy }: CopyableCodeProps) {
   return (
-    <span className="faso-mark" aria-hidden="true">
-      <span />
-      <Sparkles size={13} strokeWidth={2.5} />
-    </span>
+    <div className="copyable-code">
+      <pre className="code-block" tabIndex={0}><code>{code}</code></pre>
+      <Button className="copyable-code-action" variant="outline" size="sm" onClick={onCopy}>
+        <Copy size={15} /> {copied ? "Copié" : "Copier"}
+      </Button>
+    </div>
   );
 }
 
@@ -285,15 +193,27 @@ export default function App() {
   const [theme, setTheme] = useState<Theme>("light");
   const [menuOpen, setMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [copiedSnippet, setCopiedSnippet] = useState<string | null>(null);
   const [noticeVisible, setNoticeVisible] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>();
+  const [appointmentSlot, setAppointmentSlot] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("demande");
   const [toastVisible, setToastVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [requestType, setRequestType] = useState("citizen");
+  const [documents, setDocuments] = useState<string[]>(["identity"]);
+  const [provinces, setProvinces] = useState<string[]>(["kadiogo"]);
+  const [amount, setAmount] = useState<number>();
+  const [dateRange, setDateRange] = useState<{ start?: string; end?: string }>({});
+  const [appointmentTime, setAppointmentTime] = useState("09:00");
+  const [language, setLanguage] = useState("fr");
+  const [activeFilters, setActiveFilters] = useState([
+    { id: "status", label: "Statut", value: "En attente" },
+  ]);
   const searchResults = searchQuery.trim()
     ? searchablePages
         .filter((page) =>
@@ -329,6 +249,12 @@ export default function App() {
     void navigator.clipboard?.writeText("npm install @faso-ui/react");
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1800);
+  }
+
+  function copySnippet(code: string) {
+    void navigator.clipboard?.writeText(code);
+    setCopiedSnippet(code);
+    window.setTimeout(() => setCopiedSnippet(null), 1800);
   }
 
   return (
@@ -483,7 +409,6 @@ export default function App() {
                   <div className="nav-label">
                     <group.icon size={15} />
                     {group.label}
-                    {group.count ? <span>{group.count}</span> : null}
                   </div>
                   {group.items.map((item, itemIndex) => (
                     <a
@@ -557,6 +482,61 @@ export default function App() {
               </div>
             </section>
 
+            <section className="doc-section" id="architecture">
+              <div className="section-heading">
+                <div>
+                  <span className="eyebrow">Repères du catalogue</span>
+                  <h2>Du socle au parcours</h2>
+                </div>
+                <p>
+                  Chaque famille répond à un niveau de composition différent.
+                  Commencez par le composant le plus simple qui couvre votre besoin.
+                </p>
+              </div>
+              <div className="catalog-grid">
+                <Card className="catalog-card">
+                  <div className="catalog-title">
+                    <h3>Composants de base</h3>
+                    <Badge size="sm" variant="neutral">Base</Badge>
+                  </div>
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    Primitives génériques et composables, sans vocabulaire administratif.
+                  </p>
+                  <Link className="mt-4 inline-flex" href="#bouton">Explorer les composants</Link>
+                </Card>
+                <Card className="catalog-card">
+                  <div className="catalog-title">
+                    <h3>Composants métier</h3>
+                    <Badge size="sm" variant="success">Métier</Badge>
+                  </div>
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    Assemblages adaptés aux dossiers, documents, paiements et démarches publiques.
+                  </p>
+                  <Link className="mt-4 inline-flex" href="#informations-administratives">Explorer le métier</Link>
+                </Card>
+                <Card className="catalog-card">
+                  <div className="catalog-title">
+                    <h3>Patrons de parcours</h3>
+                    <Badge size="sm">Patron</Badge>
+                  </div>
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    Scénarios complets qui coordonnent plusieurs composants autour d’une tâche usager.
+                  </p>
+                  <Link className="mt-4 inline-flex" href="#démarche-en-ligne">Voir les parcours</Link>
+                </Card>
+                <Card className="catalog-card">
+                  <div className="catalog-title">
+                    <h3>Gabarits institutionnels</h3>
+                    <Badge size="sm" variant="neutral">Gabarit</Badge>
+                  </div>
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    Structures officielles qui garantissent l’identification constante du service public.
+                  </p>
+                  <Link className="mt-4 inline-flex" href="#structure-officielle">Voir les gabarits</Link>
+                </Card>
+              </div>
+            </section>
+
             <section className="mt-16 grid gap-3 md:grid-cols-3">
               {foundations.map((item) => (
                 <Card className="foundation-card" key={item.title}>
@@ -580,7 +560,7 @@ export default function App() {
                   tokens globaux une seule fois à la racine.
                 </p>
               </div>
-              <pre className="code-block">
+              <pre className="code-block" tabIndex={0}>
                 <code>{`npm install @faso-ui/react
 
 import "@faso-ui/react/styles.css"
@@ -806,7 +786,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     est conservé pour les formulaires.
                   </p>
                 </div>
-                <pre className="code-block">
+                <pre className="code-block" tabIndex={0}>
                   <code>{`import { Button } from "@/components/ui/button"
 
 <Button type="submit">
@@ -828,7 +808,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     également acceptées.
                   </p>
                 </div>
-                <div className="api-table-wrap">
+                <div className="api-table-wrap" tabIndex={0}>
                   <table className="api-table">
                     <thead>
                       <tr>
@@ -957,7 +937,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     compositions avancées.
                   </p>
                 </div>
-                <pre className="code-block">
+                <pre className="code-block" tabIndex={0}>
                   <code>{`<Field
   label="Numéro CNIB"
   placeholder="Ex. B1234567"
@@ -1050,7 +1030,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     une préférence esthétique.
                   </p>
                 </div>
-                <pre className="code-block">
+                <pre className="code-block" tabIndex={0}>
                   <code>{`<Badge variant="success">Validé</Badge>
 <Badge variant="warning">
   <Clock3 />
@@ -1125,7 +1105,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     <code>role="status"</code>.
                   </p>
                 </div>
-                <pre className="code-block">
+                <pre className="code-block" tabIndex={0}>
                   <code>{`<Alert variant="success" title="Dossier transmis">
   Votre demande a bien été enregistrée.
 </Alert>
@@ -1238,7 +1218,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     décision sensible.
                   </p>
                 </div>
-                <pre className="code-block">
+                <pre className="code-block" tabIndex={0}>
                   <code>{`<Select aria-label="Province">
   <option>Kadiogo</option>
   <option>Houet</option>
@@ -1314,7 +1294,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     <Badge size="sm">Pagination</Badge>
                   </div>
                   <div className="grid min-h-24 place-items-center">
-                    <Pagination total={3} />
+                    <Pagination page={2} total={3} />
                   </div>
                 </Card>
               </div>
@@ -1489,11 +1469,11 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
               </Drawer>
             </section>
 
-            <section className="doc-section" id="composants-avancés">
+            <section className="doc-section" aria-labelledby="saisie-et-retours-title">
               <div className="section-heading">
                 <div>
-                  <span className="eyebrow">Composants · Démarches</span>
-                  <h2>Composants avancés</h2>
+                  <span className="eyebrow">Composants de base</span>
+                  <h2 id="saisie-et-retours-title">Saisie et retours</h2>
                 </div>
                 <p>
                   Identification, pièces justificatives, recherche assistée et
@@ -1501,14 +1481,14 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                 </p>
               </div>
               <div className="catalog-grid">
-                <Card className="catalog-card sm:col-span-2">
+                <Card className="catalog-card sm:col-span-2" id="téléversement-de-fichier">
                   <div className="catalog-title">
                     <h3>Téléversement de fichier</h3>
                     <Badge size="sm">FileUpload</Badge>
                   </div>
                   <FileUpload label="Déposez votre copie de CNIB" />
                 </Card>
-                <Card className="catalog-card">
+                <Card className="catalog-card" id="code-de-vérification">
                   <div className="catalog-title">
                     <h3>Code de vérification</h3>
                     <Badge size="sm">OTP</Badge>
@@ -1521,11 +1501,11 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     <Badge size="sm">Champs locaux</Badge>
                   </div>
                   <div className="space-y-4">
-                    <DateField label="Date de naissance" />
-                    <PhoneField />
+                    <div id="champ-de-date"><DateField label="Date de naissance" /></div>
+                    <div id="champ-de-téléphone"><PhoneField /></div>
                   </div>
                 </Card>
-                <Card className="catalog-card">
+                <Card className="catalog-card" id="autocomplétion">
                   <div className="catalog-title">
                     <h3>Autocomplétion</h3>
                     <Badge size="sm">Combobox</Badge>
@@ -1540,7 +1520,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     ]}
                   />
                 </Card>
-                <Card className="catalog-card">
+                <Card className="catalog-card" id="résumé-d’erreurs">
                   <div className="catalog-title">
                     <h3>Résumé d’erreurs</h3>
                     <Badge size="sm">ErrorSummary</Badge>
@@ -1560,7 +1540,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                 </Card>
               </div>
               <div className="mt-4 grid gap-4 lg:grid-cols-2">
-                <Card className="catalog-card">
+                <Card className="catalog-card" id="accordéon">
                   <div className="catalog-title">
                     <h3>Questions fréquentes</h3>
                     <Badge size="sm">Accordion</Badge>
@@ -1594,7 +1574,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     ]}
                   />
                 </Card>
-                <Card className="catalog-card">
+                <Card className="catalog-card" id="état-vide">
                   <div className="catalog-title">
                     <h3>État vide</h3>
                     <Badge size="sm">EmptyState</Badge>
@@ -1616,21 +1596,10 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                   </p>
                 </div>
                 <div className="example-row">
-                  <Button onClick={() => setToastVisible(true)}>
-                    Afficher une notification
-                  </Button>
-                  <Tooltip label="Le traitement prend généralement deux jours ouvrés">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      aria-label="Informations sur le délai"
-                    >
-                      <CircleHelp />
-                    </Button>
-                  </Tooltip>
-                  <Spinner />
-                  <Avatar name="Adama Ouédraogo" />
-                  <Avatar name="Ministère Justice" size="lg" />
+                  <div id="notification"><Button onClick={() => setToastVisible(true)}>Afficher une notification</Button></div>
+                  <div id="infobulle"><Tooltip label="Le traitement prend généralement deux jours ouvrés"><Button variant="outline" size="icon" aria-label="Informations sur le délai"><CircleHelp /></Button></Tooltip></div>
+                  <div id="indicateur-de-chargement"><Spinner /></div>
+                  <div id="avatar" className="flex items-center gap-2"><Avatar name="Adama Ouédraogo" /><Avatar name="Ministère Justice" size="lg" /></div>
                 </div>
               </div>
               {toastVisible ? (
@@ -1652,7 +1621,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                   </p>
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <Card className="catalog-card">
+                  <Card className="catalog-card" id="liste-de-données">
                     <DataList
                       items={[
                         { label: "Référence", value: "BF-2026-0148" },
@@ -1665,26 +1634,26 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     />
                   </Card>
                   <div className="grid gap-3">
-                    <StatCard
+                    <div id="carte-statistique"><StatCard
                       label="Dossiers traités"
                       value="1 248"
                       detail="+12 % ce mois"
                       icon={<FileCheck2 />}
-                    />
+                    /></div>
                     <Separator label="ou" />
-                    <GlobalBanner>
+                    <div id="bannière-globale"><GlobalBanner>
                       Maintenance prévue dimanche de 02 h à 04 h.
-                    </GlobalBanner>
+                    </GlobalBanner></div>
                   </div>
                 </div>
               </div>
             </section>
 
-            <section className="doc-section" id="composants-complémentaires">
+            <section className="doc-section" aria-labelledby="navigation-et-superpositions-title">
               <div className="section-heading">
                 <div>
-                  <span className="eyebrow">Composants · Compléments</span>
-                  <h2>Interactions et services</h2>
+                  <span className="eyebrow">Composants de base</span>
+                  <h2 id="navigation-et-superpositions-title">Navigation et superpositions</h2>
                 </div>
                 <p>
                   Les dernières primitives couvrent la recherche, les dates, les
@@ -1699,7 +1668,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     <Badge size="sm">SearchBox · NavigationMenu</Badge>
                   </div>
                   <div className="space-y-4">
-                    <SearchBox
+                    <div id="barre-de-recherche"><SearchBox
                       options={[
                         {
                           value: "nationalite",
@@ -1718,8 +1687,8 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                         },
                       ]}
                       onSelect={() => undefined}
-                    />
-                    <NavigationMenu
+                    /></div>
+                    <div id="menu-de-navigation"><NavigationMenu
                       items={[
                         {
                           label: "Démarches",
@@ -1738,7 +1707,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                         },
                         { label: "Mes dossiers", href: "#" },
                       ]}
-                    />
+                    /></div>
                   </div>
                 </Card>
                 <Card className="catalog-card">
@@ -1747,21 +1716,21 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     <Badge size="sm">DatePicker · Popover</Badge>
                   </div>
                   <div className="flex flex-wrap gap-3">
-                    <DatePicker
+                    <div id="sélecteur-de-date"><DatePicker
                       value={selectedDate}
                       onValueChange={setSelectedDate}
-                    />
-                    <Popover
+                    /></div>
+                    <div id="fenêtre-contextuelle"><Popover
                       label="Aide"
                       trigger={<Button variant="outline">Pourquoi ?</Button>}
                     >
                       <p className="text-sm text-muted-foreground">
                         Cette date permet de vérifier la validité du document.
                       </p>
-                    </Popover>
+                    </Popover></div>
                   </div>
                 </Card>
-                <Card className="catalog-card">
+                <Card className="catalog-card" id="champ-composé">
                   <div className="catalog-title">
                     <h3>Formulaire composé</h3>
                     <Badge size="sm">FormField</Badge>
@@ -1780,22 +1749,41 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     </IconButton>
                   </div>
                 </Card>
+                <Card className="catalog-card" id="prise-de-rendez-vous">
+                  <div className="catalog-title">
+                    <h3>Prise de rendez-vous</h3>
+                    <Badge size="sm">AppointmentScheduler</Badge>
+                  </div>
+                  <AppointmentScheduler
+                    title="Choisissez un créneau"
+                    description="Les créneaux restants pour aujourd’hui."
+                    value={appointmentSlot}
+                    onValueChange={setAppointmentSlot}
+                    slots={[
+                      { id: "09-00", label: "09 h 00", period: "Matin" },
+                      { id: "09-30", label: "09 h 30", period: "Matin" },
+                      { id: "10-00", label: "10 h 00", period: "Matin" },
+                      { id: "10-30", label: "10 h 30", period: "Matin", disabled: true },
+                      { id: "14-00", label: "14 h 00", period: "Après-midi" },
+                      { id: "14-30", label: "14 h 30", period: "Après-midi" },
+                      { id: "16-00", label: "16 h 00", period: "Après-midi", disabled: true },
+                    ]}
+                  />
+                </Card>
                 <Card className="catalog-card">
                   <div className="catalog-title">
                     <h3>Étiquettes et fichier</h3>
                     <Badge size="sm">Tag · FilePreview</Badge>
                   </div>
                   <div className="mb-4 flex flex-wrap gap-2">
-                    <Tag selected>Validé</Tag>
-                    <Tag onRemove={() => undefined}>Kadiogo</Tag>
-                    <Tag disabled>Archivé</Tag>
+                    <span id="étiquette" className="contents"><Tag selected>Validé</Tag><Tag onRemove={() => undefined}>Kadiogo</Tag><Tag disabled>Archivé</Tag></span>
                   </div>
-                  <FilePreview
+                  <div id="aperçu-de-fichier"><FilePreview
                     name="cnib-adama.pdf"
                     type="PDF"
                     size="1,2 Mo"
                     onRemove={() => undefined}
-                  />
+                  /></div>
                 </Card>
                 <Card className="catalog-card">
                   <div className="catalog-title">
@@ -1803,7 +1791,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     <Badge size="sm">NotificationCenter · AlertDialog</Badge>
                   </div>
                   <div className="example-row">
-                    <NotificationCenter
+                    <div id="centre-de-notifications"><NotificationCenter
                       notifications={[
                         {
                           id: "1",
@@ -1814,8 +1802,8 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                         },
                         { id: "2", title: "Paiement reçu", time: "Hier" },
                       ]}
-                    />
-                    <Button
+                    /></div>
+                    <Button id="dialogue-de-confirmation"
                       variant="destructive"
                       onClick={() => setAlertDialogOpen(true)}
                     >
@@ -1833,7 +1821,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                   />
                 </Card>
               </div>
-              <div className="component-doc-block">
+              <div className="component-doc-block" id="informations-administratives">
                 <SectionHeader
                   title="Informations administratives"
                   description="Champs spécialisés pour les services burkinabè."
@@ -1850,7 +1838,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                   <IdentityDocumentField />
                 </div>
               </div>
-              <div className="mt-4 grid gap-4 lg:grid-cols-2">
+              <div className="mt-4 grid gap-4 lg:grid-cols-2" id="dossier-et-paiement">
                 <PaymentSummary
                   items={[
                     { label: "Timbre fiscal", amount: 200 },
@@ -1894,10 +1882,204 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
               </div>
             </section>
 
+            <section className="doc-section" id="bibliothèque-métier">
+              <div className="section-heading">
+                <div>
+                  <span className="eyebrow">Composants métier</span>
+                  <h2>Bibliothèque métier</h2>
+                </div>
+                <p>
+                  Des composants composés qui traduisent les besoins récurrents
+                  des services publics en interfaces cohérentes.
+                </p>
+              </div>
+
+              <div className="component-doc-block" id="formulaires-administratifs">
+                <SectionHeader
+                  title="Formulaires administratifs"
+                  description="Des champs contrôlés adaptés aux données et usages locaux."
+                />
+                <FormSection
+                  className="mt-5"
+                  title="Informations de la demande"
+                  description="Exemple interactif combinant les nouveaux contrôles."
+                >
+                  <div className="grid gap-6 lg:grid-cols-2">
+                    <RadioGroup
+                      legend="Vous effectuez la demande pour"
+                      value={requestType}
+                      onValueChange={setRequestType}
+                      options={[
+                        { value: "citizen", label: "Moi-même", description: "Demande personnelle" },
+                        { value: "representative", label: "Une autre personne", description: "Avec une procuration" },
+                      ]}
+                    />
+                    <CheckboxGroup
+                      legend="Documents disponibles"
+                      hint="Sélectionnez toutes les pièces déjà en votre possession."
+                      value={documents}
+                      onValueChange={setDocuments}
+                      options={[
+                        { value: "identity", label: "CNIB ou passeport" },
+                        { value: "birth", label: "Extrait de naissance" },
+                        { value: "residence", label: "Certificat de résidence" },
+                      ]}
+                    />
+                    <PasswordField label="Mot de passe" hint="Au moins 8 caractères." />
+                    <CurrencyField
+                      label="Montant déclaré"
+                      value={amount}
+                      onValueChange={setAmount}
+                      minimum={0}
+                    />
+                    <MultiSelect
+                      label="Provinces concernées"
+                      value={provinces}
+                      onValueChange={setProvinces}
+                      options={[
+                        { value: "kadiogo", label: "Kadiogo", description: "Centre" },
+                        { value: "houet", label: "Houet", description: "Hauts-Bassins" },
+                        { value: "boulkiemde", label: "Boulkiemdé", description: "Centre-Ouest" },
+                      ]}
+                    />
+                    <TimeField
+                      label="Heure du rendez-vous"
+                      value={appointmentTime}
+                      onValueChange={setAppointmentTime}
+                      min="08:00"
+                      max="16:00"
+                    />
+                  </div>
+                  <DateRangeField
+                    label="Période souhaitée"
+                    value={dateRange}
+                    onValueChange={setDateRange}
+                  />
+                  <FormActions
+                    secondaryLabel="Annuler"
+                    saveLabel="Enregistrer le brouillon"
+                    primaryLabel="Continuer"
+                  />
+                </FormSection>
+              </div>
+
+              <div className="mt-4 grid gap-4 lg:grid-cols-2" id="services-aux-citoyens">
+                <ServiceCard
+                  badge="100 % en ligne"
+                  title="Certificat de nationalité burkinabè"
+                  description="Préparez les pièces et suivez votre demande en ligne."
+                  organization="Ministère de la Justice"
+                  fee="500 FCFA"
+                  processingTime="5 jours ouvrés"
+                  online
+                  href="#services-aux-citoyens"
+                />
+                <div className="grid gap-4">
+                  <ReferenceNumber value="BF-2026-01842" />
+                  <Deadline
+                    duration="3 à 5 jours ouvrés"
+                    description="À compter de la validation des pièces."
+                  />
+                </div>
+              </div>
+
+              <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                <DocumentChecklist
+                  items={[
+                    { id: "cnib", label: "Copie de la CNIB", status: "validated", required: true },
+                    { id: "birth", label: "Extrait de naissance", status: "provided", required: true },
+                    { id: "photo", label: "Photo d’identité", status: "missing", required: true, action: <Button size="sm" variant="outline">Ajouter</Button> },
+                  ]}
+                />
+                <ContactBlock
+                  organization="Centre de services aux citoyens"
+                  phone="+226 25 30 66 44"
+                  email="aide@service.gov.bf"
+                  hours="Lundi–vendredi, 8 h–16 h"
+                />
+              </div>
+
+              <div className="component-doc-block" id="éligibilité">
+                <SectionHeader
+                  title="Éligibilité"
+                  description="Un parcours court, progressif et utilisable au clavier."
+                />
+                <EligibilityCheck
+                  questions={[
+                    {
+                      id: "nationality",
+                      title: "Êtes-vous de nationalité burkinabè ?",
+                      options: [{ value: "yes", label: "Oui" }, { value: "no", label: "Non" }],
+                    },
+                    {
+                      id: "adult",
+                      title: "Avez-vous 18 ans ou plus ?",
+                      options: [{ value: "yes", label: "Oui" }, { value: "no", label: "Non" }],
+                    },
+                  ]}
+                  evaluate={(answers) => ({
+                    eligible: answers.nationality === "yes" && answers.adult === "yes",
+                    title: answers.nationality === "yes" && answers.adult === "yes" ? "Vous pouvez poursuivre" : "Cette démarche ne correspond pas à votre situation",
+                    description: answers.nationality === "yes" && answers.adult === "yes" ? "Préparez maintenant vos pièces justificatives." : "Contactez le service pour connaître la procédure adaptée.",
+                  })}
+                />
+              </div>
+
+              <div className="component-doc-block">
+                <SectionHeader
+                  title="Navigation publique et données"
+                  description="Repères de page et affichage responsive des résultats."
+                />
+                <div className="mt-5 grid gap-6 lg:grid-cols-[15rem_1fr]">
+                  <div className="grid content-start gap-5">
+                    <BackLink onClick={(event) => event.preventDefault()}>Retour aux démarches</BackLink>
+                    <SideNavigation items={[
+                      { label: "Vue d’ensemble", href: "#bibliothèque-métier", current: true },
+                      { label: "Mes documents", href: "#services-aux-citoyens" },
+                      { label: "Historique", href: "#dossier-et-paiement" },
+                    ]} />
+                    <LanguageSwitcher
+                      value={language}
+                      onValueChange={setLanguage}
+                      languages={[{ code: "fr", label: "Français" }, { code: "mo", label: "Mooré" }]}
+                    />
+                    <AnchorNavigation activeId="resultats-demo" items={[
+                      { id: "resultats-demo", label: "Résultats" },
+                      { id: "bibliothèque-métier", label: "Composants" },
+                    ]} />
+                  </div>
+                  <div id="resultats-demo" className="grid gap-4">
+                    <FilterPanel
+                      activeFilters={activeFilters}
+                      onRemoveFilter={(id) => setActiveFilters((items) => items.filter((item) => item.id !== id))}
+                      onReset={() => setActiveFilters([])}
+                    >
+                      <Field id="new-filter-reference" label="Référence" placeholder="BF-2026…" />
+                    </FilterPanel>
+                    <ResultCount count={requestRows.length} label="dossier" />
+                    <ResponsiveTable
+                      caption="Dossiers récents"
+                      data={requestRows}
+                      getRowKey={(row) => row.reference}
+                      columns={[
+                        { key: "reference", header: "Référence", primary: true, cell: (row) => row.reference },
+                        { key: "service", header: "Démarche", cell: (row) => row.service },
+                        { key: "status", header: "Statut", cell: (row) => row.status },
+                      ]}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <OfficialNotice title="Information officielle">
+                <p>Les nouveaux composants sont disponibles depuis le point d’entrée public de Faso UI.</p>
+              </OfficialNotice>
+            </section>
+
             <section className="doc-section" id="structure-officielle">
               <div className="section-heading">
                 <div>
-                  <span className="eyebrow">Composants · Structure</span>
+                  <span className="eyebrow">Gabarits institutionnels</span>
                   <h2>Structure officielle</h2>
                 </div>
                 <p>
@@ -1920,7 +2102,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
             <section className="doc-section" id="démarche-en-ligne">
               <div className="section-heading">
                 <div>
-                  <span className="eyebrow">Patrons métier · Parcours</span>
+                  <span className="eyebrow">Patrons de parcours</span>
                   <h2>Démarche en ligne</h2>
                 </div>
                 <p>
@@ -1970,7 +2152,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                     décoration.
                   </p>
                 </div>
-                <pre className="code-block">
+                <pre className="code-block" tabIndex={0}>
                   <code>{`<Dashboard>
   <DashboardSummary />
   <RequiredActions />
@@ -2014,6 +2196,66 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                   </p>
                 </div>
               </div>
+            </section>
+
+            <section className="doc-section" id="templates">
+              <div className="section-heading">
+                <div>
+                  <span className="eyebrow">Phase 4 · Référence</span>
+                  <h2>Templates de service</h2>
+                </div>
+                <p>
+                  Des compositions prêtes à adapter pour les parcours citoyens
+                  et les espaces agents. Chaque template conserve les états,
+                  les actions et les contraintes d’accessibilité du système.
+                </p>
+              </div>
+              <div className="reference-template-grid">
+                <div id="portail-de-service"><CitizenPortalTemplate /></div>
+                <div id="détail-d'une-démarche"><ServiceDetailTemplate /></div>
+                <div id="création-d'une-demande"><ApplicationCreationTemplate /></div>
+                <div id="tableau-de-bord-citoyen"><CitizenDashboardTemplate /></div>
+                <div id="suivi-d'une-demande"><ApplicationTrackingTemplate /></div>
+                <div id="paiement"><PaymentTemplate /></div>
+                <div id="confirmation"><ConfirmationTemplate /></div>
+                <div id="erreur"><ErrorTemplate /></div>
+                <div id="maintenance"><MaintenanceTemplate /></div>
+                <div id="tableau-de-bord-agent"><AgentDashboardTemplate /></div>
+                <div id="liste-de-dossiers"><CaseListTemplate /></div>
+                <div id="recherche-administrative"><AdministrativeSearchTemplate /></div>
+                <div id="consultation-d'un-dossier"><CaseConsultationTemplate /></div>
+                <div id="traitement-d'une-demande"><ApplicationProcessingTemplate /></div>
+                <div id="gestion-documentaire"><DocumentManagementTemplate /></div>
+              </div>
+              <p className="mt-5 text-sm text-muted-foreground">
+                Voir la matrice complète dans <a href="./docs/templates/README.md">la documentation des templates</a>.
+              </p>
+            </section>
+
+            <section className="doc-section" id="performance">
+              <div className="section-heading"><div><span className="eyebrow">Guides · Résilience</span><h2>Performance</h2></div><p>Concevez pour les téléphones d’entrée de gamme et les connexions instables.</p></div>
+              <div className="accessibility-checklist"><div><Check /> Charger les données à la demande</div><div><Check /> Prévoir un état de chargement utile</div><div><Check /> Compresser les images et icônes</div><div><Check /> Tester avec une connexion lente</div></div>
+              <CopyableCode code={qualityCommands} copied={copiedSnippet === qualityCommands} onCopy={() => copySnippet(qualityCommands)} />
+            </section>
+
+            <section className="doc-section" id="contenus">
+              <div className="section-heading"><div><span className="eyebrow">Guides · Langage</span><h2>Contenus</h2></div><p>Des mots courts, précis et compréhensibles par les citoyens comme par les agents.</p></div>
+              <div className="button-guidance"><div className="guidance-do"><span><Check /> À faire</span><strong>Ajoutez une copie lisible de votre CNIB.</strong><p>Le document attendu et l’action sont explicites.</p></div><div className="guidance-dont"><span><X /> À éviter</span><strong>Erreur de validation.</strong><p>Le problème et sa résolution restent inconnus.</p></div></div>
+            </section>
+
+            <section className="doc-section" id="développement">
+              <div className="section-heading"><div><span className="eyebrow">Guides · React</span><h2>Développement</h2></div><p>Importez les composants, gardez les données métier dans votre application et respectez les conventions contrôlées.</p></div>
+              <CopyableCode code={reactExample} copied={copiedSnippet === reactExample} onCopy={() => copySnippet(reactExample)} />
+            </section>
+
+            <section className="doc-section" id="changelog">
+              <div className="section-heading"><div><span className="eyebrow">Ressources · Versions</span><h2>Changelog</h2></div><p>Les changements incompatibles, les nouvelles API et les corrections sont publiés avec chaque version.</p></div>
+              <Card className="catalog-card"><div className="catalog-title"><Badge variant="success">Non publié</Badge><h3>Phase 5 · Documentation</h3></div><p>Navigation documentaire complète, templates référencés, exemples copiables et guides de performance, contenu et développement.</p></Card>
+            </section>
+
+            <section className="doc-section" id="contribuer">
+              <div className="section-heading"><div><span className="eyebrow">Ressources · Équipe</span><h2>Contribuer</h2></div><p>Proposez un composant ou un pattern avec son état, ses tests et un exemple réel.</p></div>
+              <div className="accessibility-checklist"><div><Check /> Lire <a href="./CONTRIBUTING.md">CONTRIBUTING.md</a></div><div><Check /> Ajouter les tests clavier et axe</div><div><Check /> Documenter les états et la responsive</div><div><Check /> Mettre à jour le changelog</div></div>
             </section>
 
             <section className="doc-section" id="référentiel">
@@ -2087,7 +2329,7 @@ import { Button, Field, Alert } from "@faso-ui/react"`}</code>
                   production.
                 </p>
               </div>
-              <pre className="code-block">
+              <pre className="code-block" tabIndex={0}>
                 <code>{`npm run test
 npm run test:a11y
 npm run typecheck
