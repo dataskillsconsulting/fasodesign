@@ -133,7 +133,7 @@ export function OnlineApplicationPattern({ draftKey = onlineApplicationDraftKey,
             {step < 3 ? <Button onClick={() => changeStep(step + 1)}>Continuer <ArrowRight /></Button> : step === 3 ? <Button loading={submission.isSubmitting} loadingText="Transmission…" disabled={!draft.value.certified} onClick={submitApplication}>Transmettre la demande <ArrowRight /></Button> : <Button onClick={() => changeStep(1)}>Retour à mes démarches</Button>}
           </div>
           {draft.status === "saved" ? <p className="application-save-status" role="status">Brouillon enregistré sur cet appareil.</p> : null}
-          {submission.status === "error" ? <Alert className="mt-4" variant="error" title="Transmission impossible">Votre brouillon est conservé. Vérifiez votre connexion puis réessayez.</Alert> : null}
+          {submission.status === "error" ? <Alert className="mt-4" variant="destructive" title="Transmission impossible">Votre brouillon est conservé. Vérifiez votre connexion puis réessayez.</Alert> : null}
         </div>
       </div>
     </div>
